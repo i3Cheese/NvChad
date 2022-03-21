@@ -87,6 +87,7 @@ local plugins = {
       "neovim/nvim-lspconfig",
       module = "lspconfig",
       opt = true,
+      after = "nvim-lsp-installer",
       setup = function()
          require("core.utils").packer_lazy_load "nvim-lspconfig"
          -- reload the current file so lsp actually starts for it
