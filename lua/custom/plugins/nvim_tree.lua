@@ -2,7 +2,7 @@ local M = {}
 
 vim.g.nvim_tree_icons = {
     default = "",
-    symlink = '',
+    symlink = "",
     git = {
         unstaged = "✗",
         staged = "✓",
@@ -10,7 +10,7 @@ vim.g.nvim_tree_icons = {
         renamed = "➜",
         untracked = "★",
         deleted = "",
-        ignored = "◌"
+        ignored = "◌",
     },
     folder = {
         arrow_open = "",
@@ -21,7 +21,7 @@ vim.g.nvim_tree_icons = {
         empty_open = "",
         symlink = "",
         symlink_open = "",
-    }
+    },
 }
 
 M.config = {
@@ -29,7 +29,7 @@ M.config = {
         dotfiles = false,
         custom = {
             "__pycache__",
-        }
+        },
     },
     disable_netrw = true,
     hijack_netrw = true,
@@ -38,19 +38,19 @@ M.config = {
     hijack_cursor = true,
     update_cwd = true,
     update_focused_file = {
-       enable = true,
-       update_cwd = false,
+        enable = true,
+        update_cwd = false,
     },
     view = {
-       allow_resize = true,
-       side = "left",
-       width = 30,
-       hide_root_folder = true,
+        allow_resize = true,
+        side = "left",
+        width = 30,
+        hide_root_folder = true,
     },
     git = {
-       enable = true,
-       ignore = false,
-       timeout = 4000,
+        enable = true,
+        ignore = false,
+        timeout = 4000,
     },
 }
 

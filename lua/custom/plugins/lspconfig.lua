@@ -1,17 +1,16 @@
 local M = {}
 
-
 M.setup_lsp = function(attach, capabilities)
     local lsp_installer = require "nvim-lsp-installer"
 
     lsp_installer.settings {
         ui = {
             icons = {
-                server_installed = "﫟" ,
+                server_installed = "﫟",
                 server_pending = "",
                 server_uninstalled = "✗",
-          },
-       },
+            },
+        },
     }
 
     lsp_installer.on_server_ready(function(server)
@@ -23,14 +22,14 @@ M.setup_lsp = function(attach, capabilities)
             },
             settings = {},
         }
-        if (server.name == 'pyright') then
-            opts.venv = require('custom.utils').locate_python_venv()
+        if server.name == "pyright" then
+            opts.venv = require("custom.utils").locate_python_venv()
         end
 
         server:setup(opts)
         vim.cmd [[ do User LspAttachBuffers ]]
     end)
-    require('custom.mapping').lsp()
+    require("custom.mapping").lsp()
 end
 
 return M

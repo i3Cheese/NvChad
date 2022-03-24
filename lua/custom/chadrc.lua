@@ -2,7 +2,6 @@ local myPlugins = require "custom.plugins"
 
 M = {}
 
-
 M.plugins = {
     -- enable/disable plugins (false for disable)
     install = myPlugins,
@@ -17,7 +16,7 @@ M.plugins = {
         },
         nvimtree = {
             enable_git = 1,
-        }
+        },
     },
     default_plugin_config_replace = {
         nvim_tree = require("custom.plugins.nvim_tree").config,
@@ -42,7 +41,7 @@ M.options = {
         insert_nav = true, -- navigation in insertmode
         window_nav = true,
     },
-    clipboard="",
+    clipboard = "",
 }
 
 return M
