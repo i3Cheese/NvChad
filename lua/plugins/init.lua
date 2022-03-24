@@ -143,6 +143,7 @@ local plugins = {
     },
     {
         "mfussenegger/nvim-dap",
+        cmd = {"RunDebug"},
         config = function()
             require("plugins.configs.dap").dap.config()
             require("core.mappings").dap()
@@ -177,6 +178,7 @@ local plugins = {
     {
         "mfussenegger/nvim-dap-python",
         requires = { "nvim-dap" },
+        after = "nvim-dap",
         config = function()
             require("dap-python").setup("~/python/venvs/debugpy/bin/python")
             local dap = require("dap")
@@ -199,6 +201,7 @@ local plugins = {
         config = function()
             require("neogen").setup({})
         end,
+        cmd = {"Neogen"},
         requires = "nvim-treesitter/nvim-treesitter",
         tag = "*",
         event = "InsertEnter",
@@ -206,7 +209,7 @@ local plugins = {
 
     {
         "simrat39/symbols-outline.nvim",
-        event = "BufRead",
+        cmd = {"SymbolsOutline", "SymbolsOutlineOpen"},
         config = function()
             require("core.mappings").symbols_outline()
         end,
@@ -295,11 +298,10 @@ local plugins = {
         "kyazdani42/nvim-tree.lua",
         disable = not plugin_settings.status.nvimtree,
         -- only set "after" if lazy load is disabled and vice versa for "cmd"
-        after = not plugin_settings.options.nvimtree.lazy_load and "nvim-web-devicons",
-        cmd = plugin_settings.options.nvimtree.lazy_load and { "NvimTreeToggle", "NvimTreeFocus" },
+        -- after = not plugin_settings.options.nvimtree.lazy_load and "nvim-web-devicons",
+        cmd ={ "NvimTreeToggle", "NvimTreeFocus" },
         config = function()
             require("plugins.configs.nvimtree").setup()
-            require("core.mappings").nvimtree()
         end,
     },
 

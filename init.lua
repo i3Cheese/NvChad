@@ -18,5 +18,7 @@ for _, module in ipairs(core_modules) do
 end
 
 -- non plugin mappings
-require("core.mappings").misc()
+local mappings = require("core.mappings")
+mappings.misc()
+mappings.entrypoints()
 

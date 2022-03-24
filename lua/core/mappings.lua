@@ -203,13 +203,22 @@ M.symbols_outline = function()
 end
 
 M.dap = function()
-    map("n", "<F5>", "<CMD>RunDebug<CR>")
     map("n", "<leader>b", "<CMD>lua require'dap'.toggle_breakpoint()<CR>")
     map("n", "<F8>", "<CMD>lua require'dap'.step_over()<CR>")
     map("n", "<F9>", "<CMD>lua require'dap'.step_into()<CR>")
     map("n", "<F10>", "<CMD>lua require'dap'.step_out()<CR>")
     map("n", "<leader>dr", "<CMD>lua require'dap'.repl.open()<CR>")
     map("n", "<leader>dl", "<CMD>lua require'dap'.run_last()<CR>")
+end
+
+
+M.entrypoints = function ()
+    -- nvimtree
+    map("n", plugin_maps.nvimtree.toggle, ":NvimTreeToggle <CR>")
+    map("n", plugin_maps.nvimtree.focus, ":NvimTreeFocus <CR>")
+
+    -- dap
+    map("n", "<F5>", "<CMD>RunDebug<CR>")
 end
 
 return M
