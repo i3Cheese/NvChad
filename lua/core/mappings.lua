@@ -1,4 +1,4 @@
-local utils = require "core.utils"
+local utils = require("core.utils")
 
 local config = utils.load_config()
 local map_wrapper = utils.map
@@ -110,17 +110,22 @@ M.misc = function()
         -- terminal mappings end --
 
         -- Add Packer commands because we are not loading it at startup
-        cmd "silent! command PackerClean lua require 'plugins' require('packer').clean()"
-        cmd "silent! command PackerCompile lua require 'plugins' require('packer').compile()"
-        cmd "silent! command PackerInstall lua require 'plugins' require('packer').install()"
-        cmd "silent! command PackerStatus lua require 'plugins' require('packer').status()"
-        cmd "silent! command PackerSync lua require 'plugins' require('packer').sync()"
-        cmd "silent! command PackerUpdate lua require 'plugins' require('packer').update()"
+        cmd("silent! command PackerClean lua require 'plugins' require('packer').clean()")
+        cmd("silent! command PackerCompile lua require 'plugins' require('packer').compile()")
+        cmd("silent! command PackerInstall lua require 'plugins' require('packer').install()")
+        cmd("silent! command PackerStatus lua require 'plugins' require('packer').status()")
+        cmd("silent! command PackerSync lua require 'plugins' require('packer').sync()")
+        cmd("silent! command PackerUpdate lua require 'plugins' require('packer').update()")
 
         -- add NvChadUpdate command and mapping
-        cmd "silent! command! NvChadUpdate lua require('nvchad').update_nvchad()"
+        cmd("silent! command! NvChadUpdate lua require('nvchad').update_nvchad()")
         map("n", maps.misc.update_nvchad, ":NvChadUpdate <CR>")
     end
+    map("v", "<C-c>", '"+y')
+    map("n", "<C-c>", '"+yy') -- copy curent line in normal mode
+    map("v", "<leader>fc", '"hy:%s/<C-r>h//gc<left><left><left>')
+    map("v", "<leader>fr", '"hy:%s/<C-r>h//g<left><left><left>')
+    map("v", "<leader>ff", '"hy/<C-r>h')
 
     non_config_mappings()
     optional_mappings()
@@ -163,6 +168,9 @@ M.lspconfig = function()
     map("n", m.goto_next, "<cmd>lua vim.diagnostic.goto_next()<CR>")
     map("n", m.set_loclist, "<cmd>lua vim.diagnostic.setloclist()<CR>")
     map("n", m.formatting, "<cmd>lua vim.lsp.buf.formatting()<CR>")
+
+    map("n", "<Leader>cc", "<CMD>ClangdSwitchSourceHeader<CR>", { noremap = true, silent = true })
+    map("n", "<Leader>ll", "<CMD>lua vim.lsp.buf.formatting()<CR>", { noremap = true })
 end
 
 M.nvimtree = function()
@@ -182,6 +190,26 @@ M.telescope = function()
     map("n", m.live_grep, ":Telescope live_grep <CR>")
     map("n", m.oldfiles, ":Telescope oldfiles <CR>")
     map("n", m.themes, ":Telescope themes <CR>")
+    map(
+        "n",
+        "<Leader><Space>",
+        "<CMD>lua require'plugins.telescope'.project_files()<CR>",
+        { noremap = true, silent = true }
+    )
+end
+
+M.symbols_outline = function()
+    map("n", "<Leader>m", "<CMD>SymbolsOutline<CR>", { silent = true })
+end
+
+M.dap = function()
+    map("n", "<F5>", "<CMD>RunDebug<CR>")
+    map("n", "<leader>b", "<CMD>lua require'dap'.toggle_breakpoint()<CR>")
+    map("n", "<F8>", "<CMD>lua require'dap'.step_over()<CR>")
+    map("n", "<F9>", "<CMD>lua require'dap'.step_into()<CR>")
+    map("n", "<F10>", "<CMD>lua require'dap'.step_out()<CR>")
+    map("n", "<leader>dr", "<CMD>lua require'dap'.repl.open()<CR>")
+    map("n", "<leader>dl", "<CMD>lua require'dap'.run_last()<CR>")
 end
 
 return M

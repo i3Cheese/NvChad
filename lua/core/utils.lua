@@ -31,12 +31,12 @@ M.close_buffer = function(force)
 
     -- Select the first buffer with a number greater than given buffer
     local function get_next_buf(buf)
-        local next = vim.fn.bufnr "#"
+        local next = vim.fn.bufnr("#")
         if opts.next == "alternate" and vim.fn.buflisted(next) == 1 then
             return next
         end
-        for i = 0, vim.fn.bufnr "$" - 1 do
-            next = (buf + i) % vim.fn.bufnr "$" + 1 -- will loop back to 1
+        for i = 0, vim.fn.bufnr("$") - 1 do
+            next = (buf + i) % vim.fn.bufnr("$") + 1 -- will loop back to 1
             if vim.fn.buflisted(next) == 1 then
                 return next
             end
@@ -49,17 +49,17 @@ M.close_buffer = function(force)
 
     local buf = vim.fn.bufnr()
     if vim.fn.buflisted(buf) == 0 then -- exit if buffer number is invalid
-        vim.cmd "close"
+        vim.cmd("close")
         return
     end
 
-    if #vim.fn.getbufinfo { buflisted = 1 } < 2 then
+    if #vim.fn.getbufinfo({ buflisted = 1 }) < 2 then
         if opts.quit then
             -- exit when there is only one buffer left
             if force then
-                vim.cmd "qall!"
+                vim.cmd("qall!")
             else
-                vim.cmd "confirm qall"
+                vim.cmd("confirm qall")
             end
             return
         end
@@ -71,12 +71,12 @@ M.close_buffer = function(force)
         if chad_term then
             -- Must be a window type
             vim.cmd(string.format("setlocal nobl", buf))
-            vim.cmd "enew"
+            vim.cmd("enew")
             return
         end
         -- don't exit and create a new empty buffer
-        vim.cmd "enew"
-        vim.cmd "bp"
+        vim.cmd("enew")
+        vim.cmd("bp")
     end
 
     local next_buf = get_next_buf(buf)
@@ -95,7 +95,7 @@ M.close_buffer = function(force)
                 vim.cmd(string.format("%d bufdo setlocal nobl", buf))
                 -- switch to another buff
                 -- TODO switch to next buffer, this works too
-                vim.cmd "BufferLineCycleNext"
+                vim.cmd("BufferLineCycleNext")
             else
                 local cur_win = vim.fn.winnr()
                 -- we can close this window
@@ -139,15 +139,7 @@ M.hide_statusline = function()
 end
 
 M.load_config = function()
-    local conf = require "core.default_config"
-
-    local chadrcExists, change = pcall(require, "custom.chadrc")
-
-    -- if chadrc exists , then merge its table into the default config's
-
-    if chadrcExists then
-        conf = vim.tbl_deep_extend("force", conf, change)
-    end
+    local conf = require("core.default_config")
 
     return conf
 end
@@ -295,29 +287,23 @@ M.label_plugins = function(plugins)
     return plugins_labeled
 end
 
--- remove plugins specified by user from the plugins table
-M.remove_default_plugins = function(plugins)
-    local removals = require("core.utils").load_config().plugins.default_plugin_remove or {}
-    if not vim.tbl_isempty(removals) then
-        for _, plugin in pairs(removals) do
-            plugins[plugin] = nil
-        end
+M.locate_python_venv = function()
+    local cwd = vim.fn.getcwd()
+    if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+        return cwd .. "/venv/"
+    elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+        return cwd .. "/.venv/"
     end
-    return plugins
+    return nil
 end
 
--- append user plugins to default plugins
-M.add_user_plugins = function(plugins)
-    local user_Plugins = require("core.utils").load_config().plugins.install or {}
-    if type(user_Plugins) == "string" then
-        user_Plugins = require(user_Plugins)
+M.locate_python_executable = function()
+    local venv = M.locate_python_venv()
+    if venv == nil then
+        return "/usr/bin/python3"
+    else
+        return venv .. "bin/python"
     end
-    if not vim.tbl_isempty(user_Plugins) then
-        for _, v in pairs(user_Plugins) do
-            plugins[v[1]] = v
-        end
-    end
-    return plugins
 end
 
 return M

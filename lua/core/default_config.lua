@@ -7,7 +7,7 @@ M.options = {
     -- custom = {}
     -- general nvim/vim options , check :h optionname to know more about an option
 
-    clipboard = "unnamedplus",
+    clipboard = "",
     cmdheight = 1,
     ruler = false,
     hidden = true,
@@ -17,11 +17,11 @@ M.options = {
     mouse = "a",
     number = true,
     numberwidth = 2,
-    relativenumber = false,
+    relativenumber = true,
     expandtab = true,
-    shiftwidth = 2,
+    shiftwidth = 4,
     smartindent = true,
-    tabstop = 8,
+    tabstop = 4,
     timeoutlen = 400,
     updatetime = 250,
     undofile = true,
@@ -30,7 +30,7 @@ M.options = {
 
     -- NvChad options
     nvChad = {
-        copy_cut = true, -- copy cut text ( x key ), visual and normal mode
+        copy_cut = false, -- copy cut text ( x key ), visual and normal mode
         copy_del = true, -- copy deleted text ( dd key ), visual and normal mode
         insert_nav = true, -- navigation in insertmode
         window_nav = true,
@@ -63,7 +63,7 @@ M.plugins = {
         bufferline = true, -- manage and preview opened buffers
         colorizer = false, -- color RGB, HEX, CSS, NAME color codes
         comment = true, -- easily (un)comment code, language aware
-        alpha = false, -- dashboard
+        alpha = true, -- dashboard
         better_escape = true, -- map to <ESC> with no lag
         feline = true, -- statusline
         gitsigns = true,
@@ -72,6 +72,7 @@ M.plugins = {
         cmp = true,
         nvimtree = true,
         autopairs = true,
+        dap = true,
     },
     options = {
         packer = {

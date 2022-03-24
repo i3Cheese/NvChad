@@ -6,8 +6,6 @@ M.dap = {
         vim.cmd "silent! command RunDebug lua require'dap'.continue()"
         vim.cmd "silent! command StopDebug lua require'dap'.disconnect()"
 
-        require("custom.mapping").dap()
-
         dap.adapters.lldb = {
             type = "executable",
             command = "lldb-vscode",

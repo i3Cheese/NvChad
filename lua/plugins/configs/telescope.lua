@@ -4,7 +4,13 @@ if not present then
     return
 end
 
-local default = {
+local config = {
+    pickers = {
+        find_files = {
+            find_command = { "find", ".", "-type", "f" },
+            follow = true,
+        },
+    },
     defaults = {
         vimgrep_arguments = {
             "rg",
@@ -54,12 +60,8 @@ local default = {
 }
 
 local M = {}
-M.setup = function(override_flag)
-    if override_flag then
-        default = require("core.utils").tbl_override_req("telescope", default)
-    end
-
-    telescope.setup(default)
+M.setup = function()
+    telescope.setup(config)
 
     local extensions = { "themes", "terms" }
 

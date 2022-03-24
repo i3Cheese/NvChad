@@ -161,17 +161,17 @@ M.lsp_handlers = function()
         border = "single",
     })
 
-    -- suppress error messages from lang servers
-    vim.notify = function(msg, log_level)
-        if msg:match "exit code" then
-            return
-        end
-        if log_level == vim.log.levels.ERROR then
-            vim.api.nvim_err_writeln(msg)
-        else
-            vim.api.nvim_echo({ { msg } }, true, {})
-        end
-    end
+    -- -- suppress error messages from lang servers
+    -- vim.notify = function(msg, log_level)
+    --     if msg:match "exit code" then
+    --         return
+    --     end
+    --     if log_level == vim.log.levels.ERROR then
+    --         vim.api.nvim_err_writeln(msg)
+    --     else
+    --         vim.api.nvim_echo({ { msg } }, true, {})
+    --     end
+    -- end
 end
 
 M.gitsigns = function(override_flag)

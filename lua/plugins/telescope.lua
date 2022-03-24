@@ -7,14 +7,4 @@ M.project_files = function()
         require("telescope.builtin").find_files(opts)
     end
 end
-
-M.config = {
-    pickers = {
-        find_files = {
-            find_command = { "find", ".", "-type", "f" },
-            follow = true,
-        },
-    },
-}
-
 return M

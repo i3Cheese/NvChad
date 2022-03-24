@@ -3,6 +3,8 @@ local g = vim.g
 
 local options = require("core.utils").load_config().options
 
+opt.spelllang = "en,ru"
+
 opt.title = true
 opt.clipboard = options.clipboard
 opt.cmdheight = options.cmdheight
