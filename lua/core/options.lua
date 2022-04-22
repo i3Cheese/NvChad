@@ -5,6 +5,9 @@ local options = require("core.utils").load_config().options
 
 opt.spelllang = "en,ru"
 
+-- GUI
+opt.guifont = "Hack Nerd Font:h11"
+
 opt.title = true
 opt.clipboard = options.clipboard
 opt.cmdheight = options.cmdheight
@@ -30,7 +33,7 @@ opt.relativenumber = options.relativenumber
 opt.ruler = options.ruler
 
 -- disable nvim intro
-opt.shortmess:append "sI"
+opt.shortmess:append("sI")
 
 opt.signcolumn = "yes"
 opt.splitbelow = true
@@ -45,39 +48,39 @@ opt.updatetime = options.updatetime
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
-opt.whichwrap:append "<>[]hl"
+opt.whichwrap:append("<>[]hl")
 
 g.mapleader = options.mapleader
 
 -- disable some builtin vim plugins
 local disabled_built_ins = {
-    "2html_plugin",
-    "getscript",
-    "getscriptPlugin",
-    "gzip",
-    "logipat",
-    "netrw",
-    "netrwPlugin",
-    "netrwSettings",
-    "netrwFileHandlers",
-    "matchit",
-    "tar",
-    "tarPlugin",
-    "rrhelper",
-    "spellfile_plugin",
-    "vimball",
-    "vimballPlugin",
-    "zip",
-    "zipPlugin",
+	"2html_plugin",
+	"getscript",
+	"getscriptPlugin",
+	"gzip",
+	"logipat",
+	"netrw",
+	"netrwPlugin",
+	"netrwSettings",
+	"netrwFileHandlers",
+	"matchit",
+	"tar",
+	"tarPlugin",
+	"rrhelper",
+	"spellfile_plugin",
+	"vimball",
+	"vimballPlugin",
+	"zip",
+	"zipPlugin",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
-    g["loaded_" .. plugin] = 1
+	g["loaded_" .. plugin] = 1
 end
 
 --Defer loading shada until after startup_
 vim.opt.shadafile = "NONE"
 vim.schedule(function()
-    vim.opt.shadafile = require("core.utils").load_config().options.shadafile
-    vim.cmd [[ silent! rsh ]]
+	vim.opt.shadafile = require("core.utils").load_config().options.shadafile
+	vim.cmd([[ silent! rsh ]])
 end)

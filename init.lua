@@ -1,24 +1,26 @@
 local present, impatient = pcall(require, "impatient")
 
 if present then
-   impatient.enable_profile()
+	impatient.enable_profile()
 end
 
 local core_modules = {
-   "core.options",
-   "core.autocmds",
-   "core.mappings",
+	"core.options",
+	"core.autocmds",
+	"core.mappings",
 }
 
 for _, module in ipairs(core_modules) do
-   local ok, err = pcall(require, module)
-   if not ok then
-      error("Error loading " .. module .. "\n\n" .. err)
-   end
+	local ok, err = pcall(require, module)
+	if not ok then
+		error("Error loading " .. module .. "\n\n" .. err)
+	end
 end
+
+vim.opt.runtimepath:append("~/.config/nvim/md-to-pdf.nvim/")
+require("md-to-pdf").setup()
 
 -- non plugin mappings
 local mappings = require("core.mappings")
 mappings.misc()
 mappings.entrypoints()
-
