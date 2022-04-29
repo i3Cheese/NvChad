@@ -52,9 +52,9 @@ local plugins = {
 
 	{
 		"akinsho/bufferline.nvim",
-        cond = function()
-            return require("core.utils").load_config().plugins.status.bufferline
-        end,
+		cond = function()
+			return require("core.utils").load_config().plugins.status.bufferline
+		end,
 		config = override_req("bufferline", "plugins.configs.bufferline", "setup"),
 		setup = function()
 			require("core.mappings").bufferline()
@@ -448,6 +448,17 @@ local plugins = {
 		"glacambre/firenvim",
 		run = function()
 			vim.fn.eval("firenvim#install(0)")
+		end,
+		config = function()
+			local firenvim_config = {}
+			firenvim_config.localSettings = {
+				[".*"] = {
+					priority = 0,
+					takeover = "never",
+				},
+				["https?://nearcrowd\\.com/*"] = { ["takeover"] = "always", ["priority"] = 1 },
+			}
+			vim.g.firenvim_config = firenvim_config
 		end,
 	},
 }

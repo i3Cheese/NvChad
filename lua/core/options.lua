@@ -6,7 +6,9 @@ local options = require("core.utils").load_config().options
 opt.spelllang = "en,ru"
 
 -- GUI
-opt.guifont = "Hack Nerd Font:h11"
+
+opt.guifont = "Hack Nerd Font:h13"
+opt.guifontwide = "Hack Nerd Font"
 
 opt.title = true
 opt.clipboard = options.clipboard

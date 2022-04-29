@@ -12,39 +12,7 @@ local icons = {
 	right = "",
 	main_icon = "  ",
 	vi_mode_icon = " ",
-	position_icon = "ﳨ ",
-}
-
-local file_name = {
-	provider = function()
-		local filename = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
-		local extension = vim.fn.expand("%:e")
-		local icon = require("nvim-web-devicons").get_icon(filename, extension)
-		if icon == nil then
-			icon = ""
-		end
-		return " " .. filename .. " " .. icon .. " "
-	end,
-	short_provider = function()
-		local filename = vim.fn.expand("%:t")
-		local extension = vim.fn.expand("%:e")
-		local icon = require("nvim-web-devicons").get_icon(filename, extension)
-		if icon == nil then
-			icon = ""
-		end
-		return " " .. filename .. " " .. icon .. " "
-	end,
-	hl = {
-		fg = colors.white,
-		bg = colors.lightbg,
-	},
-	truncate_hide = true,
-	priority = 9,
-
-	right_sep = {
-		str = icons.right,
-		hl = { fg = colors.lightbg, bg = colors.statusline_bg },
-	},
+	position_icon = "  ",
 }
 
 local dir_name = {
@@ -61,8 +29,54 @@ local dir_name = {
 	priority = 0,
 }
 
+local file_name = {
+	provider = function()
+		local filename = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
+		local extension = vim.fn.expand("%:e")
+		local icon = require("nvim-web-devicons").get_icon(filename, extension)
+		if icon == nil then
+			icon = ""
+		end
+		return " " .. filename .. " "
+	end,
+	short_provider = function()
+		local filename = vim.fn.expand("%:t")
+		local extension = vim.fn.expand("%:e")
+		local icon = require("nvim-web-devicons").get_icon(filename, extension)
+		if icon == nil then
+			icon = ""
+		end
+		return " " .. filename .. " "
+	end,
+	hl = {
+		fg = colors.white,
+		bg = colors.lightbg,
+	},
+	truncate_hide = true,
+	priority = 9,
+}
+
 local file_type = {
-	provider = "file_type",
+	provider = function()
+		local filename = vim.fn.expand("%:t")
+		local extension = vim.fn.expand("%:e")
+		local icon = require("nvim-web-devicons").get_icon(filename, extension)
+		if icon == nil then
+			icon = ""
+		end
+        local filetype = vim.bo.filetype
+		return "[" .. filetype:upper() .. "]"
+	end,
+	hl = {
+		fg = colors.white,
+		bg = colors.lightbg,
+	},
+	right_sep = {
+		{
+			str = icons.right,
+			hl = { fg = colors.lightbg, bg = colors.statusline_bg },
+		},
+	},
 }
 
 local git_branch = {
@@ -158,7 +172,7 @@ local diagnostic = {
 }
 
 local mode_colors = {
-	["n"] = { "NORMAL", colors.grey },
+	["n"] = { "NORMAL", colors.light_grey },
 	["no"] = { "N-PENDING", colors.red },
 	["i"] = { "INSERT", colors.dark_purple },
 	["ic"] = { "INSERT", colors.dark_purple },
@@ -306,18 +320,29 @@ local current_line_pos = {
 			str = icons.left,
 			hl = function()
 				return {
-                    fg = terIf(isBufSaved, colors.green, colors.red),
+					fg = terIf(isBufSaved, colors.green, colors.red),
 					bg = colors.grey,
 				}
 			end,
 		},
 	},
 	icon = {
-		str = icons.position_icon,
+		str = function()
+			local current_line = vim.fn.line(".")
+			local total_line = vim.fn.line("$")
+
+			if current_line == 1 then
+				return " ﲓ "
+			elseif current_line == vim.fn.line("$") then
+				return " ﲐ "
+			end
+			local result, _ = math.modf((current_line / total_line) * 100)
+			return result .. "%%"
+		end,
 		hl = function()
 			return {
 				fg = colors.black,
-                bg = terIf(isBufSaved, colors.green, colors.red),
+				bg = terIf(isBufSaved, colors.green, colors.red),
 			}
 		end,
 	},
