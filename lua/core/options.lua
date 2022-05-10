@@ -7,7 +7,7 @@ opt.spelllang = "en,ru"
 
 -- GUI
 
-opt.guifont = "Hack Nerd Font:h13"
+opt.guifont = "Hack Nerd Font:h24"
 opt.guifontwide = "Hack Nerd Font"
 
 opt.title = true

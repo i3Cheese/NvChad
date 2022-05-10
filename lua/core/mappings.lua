@@ -190,6 +190,19 @@ M.cmp = function()
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = true,
 		}),
+        ["<C-I>"] = cmp.mapping(function(fallback)
+			if require("snippy").can_expand_or_advance() then
+				vim.fn.feedkeys(
+					vim.api.nvim_replace_termcodes("<Plug>(snippy-expand-or-advance)", true, true, true),
+					""
+				)
+			else
+				fallback()
+			end
+		end, {
+			"i",
+			"s",
+		}),
 		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()

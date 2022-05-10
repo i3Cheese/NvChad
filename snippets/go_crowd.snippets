@@ -15,6 +15,26 @@ snippet solveone
 		return "";
 	}
 
+snippet llines
+    let lines = input.split("\n");
+
+snippet 3el
+	let $1_$2_$3 = lines[$4].split(" ");
+	let $1 = int($1_$2_$3[0]);
+	let $2 = int($1_$2_$3[1]);
+	let $3 = int($1_$2_$3[2]);
+
+snippet 2el
+	let $1_$2 = lines[$3].split(" ");
+	let $1 = int($1_$2[0]);
+	let $2 = int($1_$2[1]);
+
+snippet 1el
+	let $1 = int(lines[$2]);
+
+snippet readArr
+	let $1 = [from x in lines[$2].split(" ") select int(x)];
+
 snippet fmin
 	function min(a: int, b: int) -> int {
 		if (a < b) {
@@ -64,4 +84,17 @@ snippet ff for i := 0..n
 snippet fr for i := n..0
 	for (let ${1:i} = ${2:n - 1}; $1 >= ${3:0}; $1 -= 1) {
 		$0
+	}
+
+snippet sPair pair<int, int>
+	struct ${1:Pair} {
+		${2:a}: int,
+		${3:b}: int,
+		function less(self: $1, other: $1) -> bool {
+			if (self.$2 == other.$2) {
+				return self.$3 < other.$3;
+			} else {
+				return self.$2 < self.$2;
+			}
+		}
 	}

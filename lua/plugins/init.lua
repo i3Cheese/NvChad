@@ -21,6 +21,7 @@ local plugins = {
 
 	{
 		"NvChad/nvim-base16.lua",
+        commit = "489408c1d0a3d310ecddd383ddc4389df862f6ad",
 		after = "packer.nvim",
 		config = function()
 			require("colors").init()
@@ -461,6 +462,15 @@ local plugins = {
 			vim.g.firenvim_config = firenvim_config
 		end,
 	},
+    {
+        "folke/zen-mode.nvim",
+		config = function()
+			require("plugins.configs.zen").setup()
+		end,
+    },
+    {
+        "alec-gibson/nvim-tetris",
+    },
 }
 
 --label plugins for operational assistance
