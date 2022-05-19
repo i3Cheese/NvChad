@@ -144,6 +144,10 @@ M.load_config = function()
 	return conf
 end
 
+M.create_command = function (name, command, opts)
+    vim.api.nvim_create_user_command(name, command, opts)
+end
+
 M.map = function(mode, keys, command, opt)
 	local options = { noremap = true, silent = true }
 	if opt then

@@ -91,23 +91,7 @@ M.comment = function(override_flag)
 	end
 end
 
-M.luasnip = function(override_flag)
-	local present, luasnip = pcall(require, "luasnip")
-	if present then
-		local default = {
-			history = true,
-			updateevents = "TextChanged,TextChangedI",
-		}
-		if override_flag then
-			default = require("core.utils").tbl_override_req("luasnip", default)
-		end
-		luasnip.config.set_config(default)
-		require("luasnip/loaders/from_vscode").load({ paths = chadrc_config.plugins.options.luasnip.snippet_path })
-		require("luasnip/loaders/from_vscode").load()
-	end
-end
-
-M.signature = function(override_flag)
+M.signature = function()
 	local present, lspsignature = pcall(require, "lsp_signature")
 	if present then
 		local default = {
@@ -127,9 +111,6 @@ M.signature = function(override_flag)
 			zindex = 200, -- by default it will be on top of all floating windows, set to 50 send it to bottom
 			padding = "", -- character to pad on left and right of signature can be ' ', or '|'  etc
 		}
-		if override_flag then
-			default = require("core.utils").tbl_override_req("signature", default)
-		end
 		lspsignature.setup(default)
 	end
 end

@@ -7,12 +7,22 @@ opt.spelllang = "en,ru"
 
 -- GUI
 
-opt.guifont = "Hack Nerd Font:h24"
-opt.guifontwide = "Hack Nerd Font"
+opt.guifont = options.guifont .. ":" .. options.guifontsize
 
 opt.title = true
+opt.titlelen = 40
+local function set_title()
+    vim.opt.titlestring = " " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+end
+set_title()
+
+local title_group = vim.api.nvim_create_augroup("TitleGroup", {clear = true})
+vim.api.nvim_create_autocmd("DirChanged", {
+    group = title_group,
+    callback = set_title
+})
+
 opt.clipboard = options.clipboard
-opt.cmdheight = options.cmdheight
 opt.cul = true -- cursor line
 
 -- Indentline
@@ -32,11 +42,12 @@ opt.mouse = options.mouse
 opt.number = options.number
 opt.numberwidth = options.numberwidth
 opt.relativenumber = options.relativenumber
-opt.ruler = options.ruler
+opt.ruler = false
 
 -- disable nvim intro
 opt.shortmess:append("sI")
 
+opt.showbreak = ">  \\"
 opt.signcolumn = "yes"
 opt.splitbelow = true
 opt.splitright = true
@@ -61,10 +72,6 @@ local disabled_built_ins = {
 	"getscriptPlugin",
 	"gzip",
 	"logipat",
-	"netrw",
-	"netrwPlugin",
-	"netrwSettings",
-	"netrwFileHandlers",
 	"matchit",
 	"tar",
 	"tarPlugin",

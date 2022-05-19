@@ -1,7 +1,7 @@
 local M = {}
 
 M.dap = {
-	config = function()
+	setup = function()
 		local dap = require("dap")
 		vim.cmd("silent! command RunDebug lua require'dap'.continue()")
 		vim.cmd("silent! command StopDebug lua require'dap'.disconnect()")
@@ -54,7 +54,7 @@ M.dap = {
 }
 
 M.dapui = {
-	config = function()
+	setup = function()
 		local dap, dapui = require("dap"), require("dapui")
 		dapui.setup({
 			icons = { expanded = "▾", collapsed = "▸" },

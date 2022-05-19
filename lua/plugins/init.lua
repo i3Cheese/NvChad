@@ -31,7 +31,9 @@ local plugins = {
 	{
 		"kyazdani42/nvim-web-devicons",
 		after = "nvim-base16.lua",
-		config = override_req("nvim_web_devicons", "plugins.configs.icons", "setup"),
+        config = function ()
+            require("plugins.configs.icons").setup()
+        end,
 	},
 
 	{
@@ -56,30 +58,36 @@ local plugins = {
 		cond = function()
 			return require("core.utils").load_config().plugins.status.bufferline
 		end,
-		config = override_req("bufferline", "plugins.configs.bufferline", "setup"),
-		setup = function()
+        config = function ()
+            require("plugins.configs.bufferline").setup()
 			require("core.mappings").bufferline()
-		end,
+        end,
 	},
 
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		disable = not plugin_settings.status.blankline,
 		event = "BufRead",
-		config = override_req("indent_blankline", "plugins.configs.others", "blankline"),
+        config = function ()
+            require("plugins.configs.others").blankline()
+        end,
 	},
 
 	{
 		"NvChad/nvim-colorizer.lua",
 		disable = not plugin_settings.status.colorizer,
 		event = "BufRead",
-		config = override_req("nvim_colorizer", "plugins.configs.others", "colorizer"),
+        config = function ()
+            require("plugins.configs.others").colorizer()
+        end,
 	},
 
 	{
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufRead", "BufNewFile" },
-		config = override_req("nvim_treesitter", "plugins.configs.treesitter", "setup"),
+        config = function ()
+            require("plugins.configs.treesitter").setup()
+        end,
 		run = ":TSUpdate",
 	},
 
@@ -88,7 +96,9 @@ local plugins = {
 		"lewis6991/gitsigns.nvim",
 		disable = not plugin_settings.status.gitsigns,
 		opt = true,
-		config = override_req("gitsigns", "plugins.configs.others", "gitsigns"),
+        config = function ()
+            require("plugins.configs.others").gitsigns()
+        end,
 		setup = function()
 			require("core.utils").packer_lazy_load("gitsigns.nvim")
 		end,
@@ -124,7 +134,9 @@ local plugins = {
 		"ray-x/lsp_signature.nvim",
 		disable = not plugin_settings.status.lspsignature,
 		after = "nvim-lspconfig",
-		config = override_req("signature", "plugins.configs.others", "signature"),
+        config = function ()
+            require("plugins.configs.others").signature()
+        end,
 	},
 
 	{
@@ -151,7 +163,7 @@ local plugins = {
 		"mfussenegger/nvim-dap",
 		cmd = { "RunDebug" },
 		config = function()
-			require("plugins.configs.dap").dap.config()
+			require("plugins.configs.dap").dap.setup()
 			require("core.mappings").dap()
 		end,
 		disabled = not plugin_settings.status.dap,
@@ -168,7 +180,7 @@ local plugins = {
 		requires = { "mfussenegger/nvim-dap" },
 		after = "nvim-dap",
 		config = function()
-			require("plugins.configs.dap").dapui.config()
+			require("plugins.configs.dap").dapui.setup()
 		end,
 	},
 	{
@@ -223,7 +235,9 @@ local plugins = {
 	{
 		"hrsh7th/nvim-cmp",
 		disable = not plugin_settings.status.cmp,
-		config = override_req("nvim_cmp", "plugins.configs.cmp", "setup"),
+        config = function ()
+            require("plugins.configs.cmp").setup()
+        end
 	},
 	{
 		"dcampos/nvim-snippy",
@@ -310,18 +324,19 @@ local plugins = {
 	},
 	{
 		"callmekohei/switcher.nvim",
-		run = function()
-			vim.cmd(
-				"py3 from pip._internal.cli.main import main as pipmain; pipmain(['install', 'pyobjc-core', 'pyobjc-framework-Cocoa']);"
-			)
-			vim.cmd(":UpdateRemotePlugins")
-		end,
-		setup = function()
-			vim.g.switcher_keyboardInputSource = "com.apple.keylayout.ABC"
-		end,
-		config = function()
-			vim.cmd([[ autocmd InsertLeave * :call SwitchEnglish('') ]])
-		end,
+        disabled = true,
+		-- run = function()
+		-- 	vim.cmd(
+		-- 		"py3 from pip._internal.cli.main import main as pipmain; pipmain(['install', 'pyobjc-core', 'pyobjc-framework-Cocoa']);"
+		-- 	)
+		-- 	vim.cmd(":UpdateRemotePlugins")
+		-- end,
+		-- setup = function()
+		-- 	vim.g.switcher_keyboardInputSource = "com.apple.keylayout.ABC"
+		-- end,
+		-- config = function()
+		-- 	vim.cmd([[ autocmd InsertLeave * :call SwitchEnglish('') ]])
+		-- end,
 	},
 	{
 		"Shatur/neovim-session-manager",
@@ -355,7 +370,9 @@ local plugins = {
 		"max397574/better-escape.nvim",
 		disable = not plugin_settings.status.better_escape,
 		event = "InsertCharPre",
-		config = override_req("better_escape", "plugins.configs.others", "better_escape"),
+        config = function ()
+            require("plugins.configs.others").better_escape()
+        end,
 	},
 	{
 		"windwp/nvim-ts-autotag",
@@ -444,6 +461,13 @@ local plugins = {
 	},
 	{
 		"stevearc/dressing.nvim",
+        config = function ()
+            require("dressing").setup({
+                input = {
+                    border = "rounded",
+                },
+            })
+        end
 	},
 	{
 		"glacambre/firenvim",

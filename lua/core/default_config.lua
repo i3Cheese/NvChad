@@ -3,7 +3,7 @@
 
 local config = {}
 
-config.NvChad = {
+config.i3cheese = {
 	firenvim = vim.fn.exists("g:started_by_firenvim") == 1,
 }
 
@@ -12,8 +12,6 @@ config.options = {
 	-- general nvim/vim options , check :h optionname to know more about an option
 
 	clipboard = "",
-	cmdheight = 1,
-	ruler = false,
 	hidden = true,
 	ignorecase = true,
 	smartcase = true,
@@ -36,14 +34,14 @@ config.options = {
 	nvChad = {
 		copy_cut = false, -- copy cut text ( x key ), visual and normal mode
 		copy_del = true, -- copy deleted text ( dd key ), visual and normal mode
-		insert_nav = true, -- navigation in insertmode
-		window_nav = true,
 		terminal_numbers = false,
 
 		-- updater
 		update_url = "https://github.com/NvChad/NvChad",
 		update_branch = "main",
 	},
+    guifont = "Hack Nerd Font",
+    guifontsize = "h11",
 }
 
 ---- UI -----
@@ -120,13 +118,11 @@ config.mappings = {
 	-- custom = {}, -- custom user mappings
 
 	misc = {
-		cheatsheet = "<leader>ch",
 		close_buffer = "<leader>x",
 		cp_whole_file = "<C-a>", -- copy all contents of current buffer
-		lineNR_toggle = "<leader>n", -- toggle line number
-		lineNR_rel_toggle = "<leader>rn",
-		update_nvchad = "<leader>uu",
-		new_buffer = "<S-t>",
+		lineNR_toggle = "<leader>nn", -- toggle line number
+		lineNR_rel_toggle = "<leader>nr",
+		new_buffer = "<leader>t",
 		new_tab = "<C-t>b",
 		save_file = "<C-s>", -- save file using :w
 	},
@@ -139,7 +135,6 @@ config.mappings = {
 		forward = "<C-l>",
 		next_line = "<C-k>",
 		prev_line = "<C-j>",
-		beginning_of_line = "<C-a>",
 	},
 
 	-- better window movement
@@ -231,7 +226,7 @@ local firenvim_config = {
 	},
 }
 
-if config.NvChad.firenvim then
+if config.i3cheese.firenvim then
 	config = vim.tbl_deep_extend("force", config, firenvim_config)
 end
 
