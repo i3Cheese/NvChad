@@ -116,31 +116,8 @@ M.close_buffer = function(force)
 	end
 end
 
--- hide statusline
--- tables fetched from load_config function
-M.hide_statusline = function()
-	local hidden = require("core.utils").load_config().plugins.options.statusline.hidden
-	local shown = require("core.utils").load_config().plugins.options.statusline.shown
-	local api = vim.api
-	local buftype = api.nvim_buf_get_option(0, "ft")
-
-	-- shown table from config has the highest priority
-	if vim.tbl_contains(shown, buftype) then
-		api.nvim_set_option("laststatus", 2)
-		return
-	end
-
-	if vim.tbl_contains(hidden, buftype) then
-		api.nvim_set_option("laststatus", 0)
-		return
-	end
-
-	api.nvim_set_option("laststatus", 2)
-end
-
 M.load_config = function()
-	local conf = require("core.default_config")
-
+	local conf = require("core.config")
 	return conf
 end
 

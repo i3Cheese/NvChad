@@ -1,13 +1,17 @@
 local opt = vim.opt
 local g = vim.g
 
-local options = require("core.utils").load_config().options
+local config = require("core.config")
+local options = config.options
+local ui = config.ui
 
 opt.spelllang = "en,ru"
+opt.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
 
 -- GUI
 
-opt.guifont = options.guifont .. ":" .. options.guifontsize
+opt.guifont = ui.guifont .. ":" .. ui.guifontsize
+
 
 opt.title = true
 opt.titlelen = 40

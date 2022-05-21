@@ -20,7 +20,7 @@ end
 
 M.better_escape = function()
 	require("better_escape").setup({
-		mapping = chadrc_config.mappings.plugins.better_escape.esc_insertmode,
+		mapping = "jk",
 		timeout = chadrc_config.plugins.options.esc_insertmode_timeout,
 	})
 end

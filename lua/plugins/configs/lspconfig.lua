@@ -41,6 +41,31 @@ local setup_lsp = function(capabilities)
 			end
 		elseif server.name == "html" then
 			opts.filetypes = { "html", "htmldjango" }
+		elseif server.name == "sumneko_lua" then
+            local runtime_path = vim.split(package.path, ";")
+            table.insert(runtime_path, "lua/?.lua")
+            table.insert(runtime_path, "lua/?/init.lua")
+			opts.settings = {
+				Lua = {
+					runtime = {
+						version = "LuaJIT",
+						path = runtime_path,
+					},
+					completion = {
+						callSnippet = "Replace",
+					},
+					diagnostics = {
+						enable = true,
+						globals = { "vim", "use" },
+					},
+					workspace = {
+						library = vim.api.nvim_get_runtime_file("", true),
+						maxPreload = 10000,
+						preloadFileSize = 10000,
+					},
+					telemetry = { enable = false },
+				},
+			}
 		end
 
 		server:setup(opts)

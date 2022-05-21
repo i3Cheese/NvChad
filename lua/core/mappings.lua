@@ -28,9 +28,6 @@ M.misc = function()
     -- yank from current cursor to end of line
     map("n", "Y", "yg$")
 
-    -- don't yank text on delete ( dd )
-    map({ "n", "v" }, "d", '"_d')
-
     -- easier navigation between windows
     map("n", "<C-h>", "<C-w>h")
     map("n", "<C-l>", "<C-w>l")

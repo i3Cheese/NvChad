@@ -6,9 +6,11 @@ end
 
 vim.opt.completeopt = "menuone,noselect"
 
-local default = {
+local config = {
 	snippet = {
 		expand = function(args)
+            print(args.body)
+            vim.pretty_print(args)
 			require("snippy").expand_snippet(args.body)
 		end,
 	},
@@ -37,11 +39,8 @@ local default = {
 }
 
 local M = {}
-M.setup = function(override_flag)
-	if override_flag then
-		default = require("core.utils").tbl_override_req("nvim_cmp", default)
-	end
-	cmp.setup(default)
+M.setup = function()
+	cmp.setup(config)
 end
 
 return M

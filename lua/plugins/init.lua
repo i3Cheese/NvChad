@@ -1,12 +1,12 @@
 local plugin_settings = require("core.utils").load_config().plugins
 vim.pretty_print(plugin_settings.status)
-local present, packer = pcall(require, plugin_settings.options.packer.init_file)
+local packer = require("plugins.packerInit")
 
-if not present then
-	return false
+local function cond_f(plugin_name)
+    return function ()
+        return require("core.config").plugins.status[plugin_name]
+    end
 end
-
-local override_req = require("core.utils").override_req
 
 local plugins = {
 	{ "NvChad/extensions" },
@@ -21,7 +21,7 @@ local plugins = {
 
 	{
 		"NvChad/nvim-base16.lua",
-        commit = "489408c1d0a3d310ecddd383ddc4389df862f6ad",
+		commit = "489408c1d0a3d310ecddd383ddc4389df862f6ad",
 		after = "packer.nvim",
 		config = function()
 			require("colors").init()
@@ -31,9 +31,9 @@ local plugins = {
 	{
 		"kyazdani42/nvim-web-devicons",
 		after = "nvim-base16.lua",
-        config = function ()
-            require("plugins.configs.icons").setup()
-        end,
+		config = function()
+			require("plugins.configs.icons").setup()
+		end,
 	},
 
 	{
@@ -55,39 +55,37 @@ local plugins = {
 
 	{
 		"akinsho/bufferline.nvim",
-		cond = function()
-			return require("core.utils").load_config().plugins.status.bufferline
-		end,
-        config = function ()
-            require("plugins.configs.bufferline").setup()
+		cond = cond_f("bufferline"),
+		config = function()
+			require("plugins.configs.bufferline").setup()
 			require("core.mappings").bufferline()
-        end,
+		end,
 	},
 
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		disable = not plugin_settings.status.blankline,
 		event = "BufRead",
-        config = function ()
-            require("plugins.configs.others").blankline()
-        end,
+		config = function()
+			require("plugins.configs.others").blankline()
+		end,
 	},
 
 	{
 		"NvChad/nvim-colorizer.lua",
 		disable = not plugin_settings.status.colorizer,
 		event = "BufRead",
-        config = function ()
-            require("plugins.configs.others").colorizer()
-        end,
+		config = function()
+			require("plugins.configs.others").colorizer()
+		end,
 	},
 
 	{
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufRead", "BufNewFile" },
-        config = function ()
-            require("plugins.configs.treesitter").setup()
-        end,
+		config = function()
+			require("plugins.configs.treesitter").setup()
+		end,
 		run = ":TSUpdate",
 	},
 
@@ -96,9 +94,9 @@ local plugins = {
 		"lewis6991/gitsigns.nvim",
 		disable = not plugin_settings.status.gitsigns,
 		opt = true,
-        config = function ()
-            require("plugins.configs.others").gitsigns()
-        end,
+		config = function()
+			require("plugins.configs.others").gitsigns()
+		end,
 		setup = function()
 			require("core.utils").packer_lazy_load("gitsigns.nvim")
 		end,
@@ -134,9 +132,9 @@ local plugins = {
 		"ray-x/lsp_signature.nvim",
 		disable = not plugin_settings.status.lspsignature,
 		after = "nvim-lspconfig",
-        config = function ()
-            require("plugins.configs.others").signature()
-        end,
+		config = function()
+			require("plugins.configs.others").signature()
+		end,
 	},
 
 	{
@@ -217,7 +215,9 @@ local plugins = {
 	{
 		"danymat/neogen",
 		config = function()
-			require("neogen").setup({})
+			require("neogen").setup({
+				snippet_engine = "snippy",
+			})
 		end,
 		cmd = { "Neogen" },
 		requires = "nvim-treesitter/nvim-treesitter",
@@ -235,9 +235,9 @@ local plugins = {
 	{
 		"hrsh7th/nvim-cmp",
 		disable = not plugin_settings.status.cmp,
-        config = function ()
-            require("plugins.configs.cmp").setup()
-        end
+		config = function()
+			require("plugins.configs.cmp").setup()
+		end,
 	},
 	{
 		"dcampos/nvim-snippy",
@@ -276,8 +276,10 @@ local plugins = {
 	{
 		"windwp/nvim-autopairs",
 		disable = not plugin_settings.status.autopairs,
-		after = plugin_settings.options.autopairs.loadAfter,
-		config = override_req("nvim_autopairs", "plugins.configs.others", "autopairs"),
+		after = "nvim-cmp",
+		config = function()
+			require("plugins.configs.others").autopairs()
+		end,
 	},
 	{
 		"goolord/alpha-nvim",
@@ -290,7 +292,9 @@ local plugins = {
 		disable = not plugin_settings.status.comment,
 		module = "Comment",
 		keys = { "gcc" },
-		config = override_req("nvim_comment", "plugins.configs.others", "comment"),
+		config = function()
+			require("plugins.configs.others").comment()
+		end,
 		setup = function()
 			require("core.mappings").comment()
 		end,
@@ -324,19 +328,18 @@ local plugins = {
 	},
 	{
 		"callmekohei/switcher.nvim",
-        disabled = true,
-		-- run = function()
-		-- 	vim.cmd(
-		-- 		"py3 from pip._internal.cli.main import main as pipmain; pipmain(['install', 'pyobjc-core', 'pyobjc-framework-Cocoa']);"
-		-- 	)
-		-- 	vim.cmd(":UpdateRemotePlugins")
-		-- end,
-		-- setup = function()
-		-- 	vim.g.switcher_keyboardInputSource = "com.apple.keylayout.ABC"
-		-- end,
-		-- config = function()
-		-- 	vim.cmd([[ autocmd InsertLeave * :call SwitchEnglish('') ]])
-		-- end,
+		run = function()
+			vim.cmd(
+				"py3 from pip._internal.cli.main import main as pipmain; pipmain(['install', 'pyobjc-core', 'pyobjc-framework-Cocoa']);"
+			)
+			vim.cmd(":UpdateRemotePlugins")
+		end,
+		setup = function()
+			vim.g.switcher_keyboardInputSource = "com.apple.keylayout.ABC"
+		end,
+		config = function()
+			vim.cmd([[ autocmd InsertLeave * :call SwitchEnglish('') ]])
+		end,
 	},
 	{
 		"Shatur/neovim-session-manager",
@@ -370,9 +373,9 @@ local plugins = {
 		"max397574/better-escape.nvim",
 		disable = not plugin_settings.status.better_escape,
 		event = "InsertCharPre",
-        config = function ()
-            require("plugins.configs.others").better_escape()
-        end,
+		config = function()
+			require("plugins.configs.others").better_escape()
+		end,
 	},
 	{
 		"windwp/nvim-ts-autotag",
@@ -461,40 +464,34 @@ local plugins = {
 	},
 	{
 		"stevearc/dressing.nvim",
-        config = function ()
-            require("dressing").setup({
-                input = {
-                    border = "rounded",
-                },
-            })
-        end
+		config = function()
+			require("dressing").setup({
+				input = {
+					border = "rounded",
+				},
+			})
+		end,
 	},
 	{
 		"glacambre/firenvim",
 		run = function()
 			vim.fn.eval("firenvim#install(0)")
 		end,
+		cond = cond_f("firenvim"),
 		config = function()
-			local firenvim_config = {}
-			firenvim_config.localSettings = {
-				[".*"] = {
-					priority = 0,
-					takeover = "never",
-				},
-				["https?://nearcrowd\\.com/*"] = { ["takeover"] = "always", ["priority"] = 1 },
-			}
-			vim.g.firenvim_config = firenvim_config
+			require("plugins.configs.firenvim").setup()
 		end,
 	},
-    {
-        "folke/zen-mode.nvim",
+	{
+		"folke/zen-mode.nvim",
 		config = function()
 			require("plugins.configs.zen").setup()
 		end,
-    },
-    {
-        "alec-gibson/nvim-tetris",
-    },
+		cmd = { "ZenMode" },
+	},
+	{
+		"alec-gibson/nvim-tetris",
+	},
 }
 
 --label plugins for operational assistance
