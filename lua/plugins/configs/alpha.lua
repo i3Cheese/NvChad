@@ -108,10 +108,7 @@ default.section = {
 }
 
 local M = {}
-M.setup = function(override_flag)
-	if override_flag then
-		default = require("core.utils").tbl_override_req("alpha", default)
-	end
+M.setup = function()
 	alpha.setup({
 		layout = {
 			{ type = "padding", val = 5 },

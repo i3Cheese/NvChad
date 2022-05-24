@@ -1,11 +1,9 @@
-local plugin_settings = require("core.utils").load_config().plugins
-vim.pretty_print(plugin_settings.status)
 local packer = require("plugins.packerInit")
 
 local function cond_f(plugin_name)
-    return function ()
-        return require("core.config").plugins.status[plugin_name]
-    end
+	return function()
+		return require("core.config").plugins.status[plugin_name]
+	end
 end
 
 local plugins = {
@@ -22,12 +20,10 @@ local plugins = {
 	{
 		"NvChad/nvim-base16.lua",
 		commit = "489408c1d0a3d310ecddd383ddc4389df862f6ad",
-		after = "packer.nvim",
 		config = function()
-			require("colors").init()
+			require("colors").init(require("core.config").ui.theme)
 		end,
 	},
-
 	{
 		"kyazdani42/nvim-web-devicons",
 		after = "nvim-base16.lua",
@@ -38,7 +34,6 @@ local plugins = {
 
 	{
 		"feline-nvim/feline.nvim",
-		disable = not plugin_settings.status.feline,
 		after = "nvim-web-devicons",
 		config = function()
 			require("plugins.configs.feline").setup()
@@ -50,12 +45,14 @@ local plugins = {
 		config = function()
 			require("fidget").setup({})
 		end,
-		-- disable = true,
 	},
 
 	{
 		"akinsho/bufferline.nvim",
-		cond = cond_f("bufferline"),
+		disable = false,
+		cond = function()
+			return require("core.config").plugins.status.bufferline
+		end,
 		config = function()
 			require("plugins.configs.bufferline").setup()
 			require("core.mappings").bufferline()
@@ -64,7 +61,6 @@ local plugins = {
 
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		disable = not plugin_settings.status.blankline,
 		event = "BufRead",
 		config = function()
 			require("plugins.configs.others").blankline()
@@ -73,7 +69,6 @@ local plugins = {
 
 	{
 		"NvChad/nvim-colorizer.lua",
-		disable = not plugin_settings.status.colorizer,
 		event = "BufRead",
 		config = function()
 			require("plugins.configs.others").colorizer()
@@ -88,11 +83,13 @@ local plugins = {
 		end,
 		run = ":TSUpdate",
 	},
+	{ "nvim-treesitter/nvim-treesitter-textobjects" },
+	{ "nvim-treesitter/nvim-treesitter-refactor" },
+	{ "nvim-treesitter/nvim-treesitter-context" },
 
 	-- git stuff
 	{
 		"lewis6991/gitsigns.nvim",
-		disable = not plugin_settings.status.gitsigns,
 		opt = true,
 		config = function()
 			require("plugins.configs.others").gitsigns()
@@ -130,7 +127,6 @@ local plugins = {
 
 	{
 		"ray-x/lsp_signature.nvim",
-		disable = not plugin_settings.status.lspsignature,
 		after = "nvim-lspconfig",
 		config = function()
 			require("plugins.configs.others").signature()
@@ -159,12 +155,10 @@ local plugins = {
 	},
 	{
 		"mfussenegger/nvim-dap",
-		cmd = { "RunDebug" },
 		config = function()
 			require("plugins.configs.dap").dap.setup()
 			require("core.mappings").dap()
 		end,
-		disabled = not plugin_settings.status.dap,
 	},
 	{
 		"theHamsta/nvim-dap-virtual-text",
@@ -234,7 +228,6 @@ local plugins = {
 	},
 	{
 		"hrsh7th/nvim-cmp",
-		disable = not plugin_settings.status.cmp,
 		config = function()
 			require("plugins.configs.cmp").setup()
 		end,
@@ -251,31 +244,26 @@ local plugins = {
 	},
 	{
 		"hrsh7th/cmp-nvim-lua",
-		disable = not plugin_settings.status.cmp,
 	},
 
 	{
 		"hrsh7th/cmp-nvim-lsp",
-		disable = not plugin_settings.status.cmp,
 		after = "cmp-nvim-lua",
 	},
 
 	{
 		"hrsh7th/cmp-buffer",
-		disable = not plugin_settings.status.cmp,
 		after = "cmp-nvim-lsp",
 	},
 
 	{
 		"hrsh7th/cmp-path",
-		disable = not plugin_settings.status.cmp,
 		after = "cmp-buffer",
 	},
 
 	-- misc plugins
 	{
 		"windwp/nvim-autopairs",
-		disable = not plugin_settings.status.autopairs,
 		after = "nvim-cmp",
 		config = function()
 			require("plugins.configs.others").autopairs()
@@ -289,13 +277,9 @@ local plugins = {
 	},
 	{
 		"numToStr/Comment.nvim",
-		disable = not plugin_settings.status.comment,
 		module = "Comment",
-		keys = { "gcc" },
 		config = function()
 			require("plugins.configs.others").comment()
-		end,
-		setup = function()
 			require("core.mappings").comment()
 		end,
 	},
@@ -303,9 +287,6 @@ local plugins = {
 	-- file managing , picker etc
 	{
 		"kyazdani42/nvim-tree.lua",
-		disable = not plugin_settings.status.nvimtree,
-		-- only set "after" if lazy load is disabled and vice versa for "cmd"
-		-- after = not plugin_settings.options.nvimtree.lazy_load and "nvim-web-devicons",
 		cmd = { "NvimTreeToggle", "NvimTreeFocus" },
 		config = function()
 			require("plugins.configs.nvimtree").setup()
@@ -362,7 +343,6 @@ local plugins = {
 
 	{
 		"andymass/vim-matchup",
-		disable = not plugin_settings.status.vim_matchup,
 		opt = true,
 		setup = function()
 			require("core.utils").packer_lazy_load("vim-matchup")
@@ -371,7 +351,6 @@ local plugins = {
 
 	{
 		"max397574/better-escape.nvim",
-		disable = not plugin_settings.status.better_escape,
 		event = "InsertCharPre",
 		config = function()
 			require("plugins.configs.others").better_escape()
@@ -492,10 +471,20 @@ local plugins = {
 	{
 		"alec-gibson/nvim-tetris",
 	},
+	{
+		"tpope/vim-fugitive",
+	},
+	{
+		"tpope/vim-git",
+	},
 }
 
 --label plugins for operational assistance
-plugins = require("core.utils").label_plugins(plugins)
+local plugins_labeled = {}
+for _, plugin in ipairs(plugins) do
+	plugins_labeled[plugin[1]] = plugin
+end
+plugins = plugins_labeled
 
 return packer.startup(function(use)
 	for _, v in pairs(plugins) do

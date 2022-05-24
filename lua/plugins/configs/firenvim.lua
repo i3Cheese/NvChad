@@ -1,10 +1,6 @@
 local M = {}
 
 M.setup = function ()
-    if not require("core.config").i3cheese.firenvim then
-        return
-    end
-
     local firenvim_config = {}
     firenvim_config.localSettings = {
         [".*"] = {

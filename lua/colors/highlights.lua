@@ -24,10 +24,31 @@ local yellow = colors.yellow
 local orange = colors.orange
 local one_bg3 = colors.one_bg3
 
--- functions for setting highlights
-local fg = require("core.utils").fg
-local fg_bg = require("core.utils").fg_bg
-local bg = require("core.utils").bg
+-- Highlights functions
+
+-- Define bg color
+-- @param group Group
+-- @param color Color
+local bg = function(group, col)
+	cmd("hi " .. group .. " guibg=" .. col)
+end
+
+-- Define fg color
+-- @param group Group
+-- @param color Color
+local fg = function(group, col)
+	cmd("hi " .. group .. " guifg=" .. col)
+end
+
+-- Define bg and fg color
+-- @param group Group
+-- @param fgcol Fg Color
+-- @param bgcol Bg Color
+local fg_bg = function(group, fgcol, bgcol)
+	cmd("hi " .. group .. " guifg=" .. fgcol .. " guibg=" .. bgcol)
+end
+
+
 
 -- Comments
 if ui.italic_comments then
@@ -168,3 +189,12 @@ if ui.transparency then
 	fg_bg("TelescopeResultsTitle", black, blue)
 end
 
+
+-- Treesitter
+
+vim.api.nvim_set_hl(0, "TSCurrentScope", {
+    bold = true,
+})
+vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", {
+    fg = white,
+})

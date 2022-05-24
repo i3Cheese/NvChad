@@ -1,12 +1,9 @@
 local M = {}
 
 -- if theme given, load given theme if given, otherwise nvchad_theme
-local nvchad_theme = require("core.utils").load_config().ui.theme
+local nvchad_theme = require("core.config").ui.theme
 
 M.init = function(theme)
-	if not theme then
-		theme = require("core.utils").load_config().ui.theme
-	end
 
 	-- set the global theme, used at various places like theme switcher, highlights
 	nvchad_theme = theme

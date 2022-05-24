@@ -9,8 +9,6 @@ vim.opt.completeopt = "menuone,noselect"
 local config = {
 	snippet = {
 		expand = function(args)
-            print(args.body)
-            vim.pretty_print(args)
 			require("snippy").expand_snippet(args.body)
 		end,
 	},

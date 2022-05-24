@@ -1,16 +1,13 @@
 local M = {}
 
-local chadrc_config = require("core.utils").load_config()
+local config = require("core.config")
 
-M.autopairs = function(override_flag)
+M.autopairs = function()
 	local present1, autopairs = pcall(require, "nvim-autopairs")
 	local present2, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
 
 	if present1 and present2 then
 		local default = { fast_wrap = {} }
-		if override_flag then
-			default = require("core.utils").tbl_override_req("nvim_autopairs", default)
-		end
 		autopairs.setup(default)
 
 		local cmp = require("cmp")
@@ -21,11 +18,11 @@ end
 M.better_escape = function()
 	require("better_escape").setup({
 		mapping = "jk",
-		timeout = chadrc_config.plugins.options.esc_insertmode_timeout,
+		timeout = config.plugins.options.esc_insertmode_timeout,
 	})
 end
 
-M.blankline = function(override_flag)
+M.blankline = function()
 	local default = {
 		indentLine_enabled = 1,
 		char = "▏",
@@ -45,13 +42,10 @@ M.blankline = function(override_flag)
 		show_trailing_blankline_indent = false,
 		show_first_indent_level = false,
 	}
-	if override_flag then
-		default = require("core.utils").tbl_override_req("indent_blankline", default)
-	end
 	require("indent_blankline").setup(default)
 end
 
-M.colorizer = function(override_flag)
+M.colorizer = function()
 	local present, colorizer = pcall(require, "colorizer")
 	if present then
 		local default = {
@@ -72,21 +66,15 @@ M.colorizer = function(override_flag)
 				mode = "background", -- Set the display mode.
 			},
 		}
-		if override_flag then
-			default = require("core.utils").tbl_override_req("nvim_colorizer", default)
-		end
 		colorizer.setup(default["filetypes"], default["user_default_options"])
 		vim.cmd("ColorizerReloadAllBuffers")
 	end
 end
 
-M.comment = function(override_flag)
+M.comment = function()
 	local present, nvim_comment = pcall(require, "Comment")
 	if present then
 		local default = {}
-		if override_flag then
-			default = require("core.utils").tbl_override_req("nvim_comment", default)
-		end
 		nvim_comment.setup(default)
 	end
 end
@@ -155,7 +143,7 @@ M.lsp_handlers = function()
 	-- end
 end
 
-M.gitsigns = function(override_flag)
+M.gitsigns = function()
 	local present, gitsigns = pcall(require, "gitsigns")
 	if present then
 		local default = {
@@ -167,9 +155,6 @@ M.gitsigns = function(override_flag)
 				changedelete = { hl = "DiffChangeDelete", text = "~", numhl = "GitSignsChangeNr" },
 			},
 		}
-		if override_flag then
-			default = require("core.utils").tbl_override_req("gitsigns", default)
-		end
 		gitsigns.setup(default)
 	end
 end

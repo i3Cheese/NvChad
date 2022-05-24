@@ -8,65 +8,64 @@ local M = {}
 
 -- these mappings will only be called during initialization
 M.misc = function()
-		-- Don't copy the replaced text after pasting in visual mode
-    map("v", "p", "p:let @+=@0<CR>")
+	-- Don't copy the replaced text after pasting in visual mode
+	map("v", "p", "p:let @+=@0<CR>")
 
-    -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
-    -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
-    -- empty mode is same as using :map
-    -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
-    map({ "n", "x", "o" }, "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-    map({ "n", "x", "o" }, "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
-    map("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
-    map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+	-- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
+	-- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
+	-- empty mode is same as using :map
+	-- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
+	map({ "n", "x", "o" }, "j", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+	map({ "n", "x", "o" }, "k", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
+	map("", "<Down>", 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', { expr = true })
+	map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
 
-    -- use ESC to turn off search highlighting
-    map("n", "<Esc>", ":noh <CR>")
+	-- use ESC to turn off search highlighting
+	map("n", "<Esc>", ":noh <CR>")
 
-    -- center cursor when moving (goto_definition)
+	-- center cursor when moving (goto_definition)
 
-    -- yank from current cursor to end of line
-    map("n", "Y", "yg$")
+	-- yank from current cursor to end of line
+	map("n", "Y", "yg$")
 
-    -- easier navigation between windows
-    map("n", "<C-h>", "<C-w>h")
-    map("n", "<C-l>", "<C-w>l")
-    map("n", "<C-k>", "<C-w>k")
-    map("n", "<C-j>", "<C-w>j")
+	-- easier navigation between windows
+	map("n", "<C-h>", "<C-w>h")
+	map("n", "<C-l>", "<C-w>l")
+	map("n", "<C-k>", "<C-w>k")
+	map("n", "<C-j>", "<C-w>j")
 
-    map("n", "<leader>k", "K", {noremap = true}) -- hover
-    map("n", "<leader>j", "J", {noremap = true}) -- join lines
+	map("n", "<leader>k", "K", { noremap = true }) -- hover
+	map("n", "<leader>j", "J", { noremap = true }) -- join lines
 
-    map("n", "<leader>x", ":lua require('core.utils').close_buffer() <CR>") -- close  buffer
-    map("n", "<C-a>", ":%y+ <CR>") -- copy whole file content
-    map("n", "<leader>t", ":enew <CR>") -- new buffer
-    map("n", "<C-t>b", ":tabnew <CR>") -- new tabs
-    map("n", "<leader>nn", ":set nu! <CR>")
+	map("n", "<leader>x", ":lua require('core.utils').close_buffer() <CR>") -- close  buffer
+	map("n", "<C-a>", ":%y+ <CR>") -- copy whole file content
+	map("n", "<leader>t", ":enew <CR>") -- new buffer
+	map("n", "<C-t>b", ":tabnew <CR>") -- new tabs
+	map("n", "<leader>nn", ":set nu! <CR>")
 
+	map("v", "<C-c>", '"+y')
+	map("n", "<C-c>", '"+yy') -- copy curent line in normal mode
+	map("v", "<leader>fc", '"hy:%s/<C-r>h//gc<left><left><left>')
+	map("v", "<leader>fr", '"hy:%s/<C-r>h//g<left><left><left>')
+	map("v", "<leader>ff", '"hy/<C-r>h')
+	map("n", "<leader>nr", ":set rnu! <CR>") -- relative line numbers
 
-    map("v", "<C-c>", '"+y')
-    map("n", "<C-c>", '"+yy') -- copy curent line in normal mode
-    map("v", "<leader>fc", '"hy:%s/<C-r>h//gc<left><left><left>')
-    map("v", "<leader>fr", '"hy:%s/<C-r>h//g<left><left><left>')
-    map("v", "<leader>ff", '"hy/<C-r>h')
-    map("n", "<leader>nr", ":set rnu! <CR>") -- relative line numbers
+	-- terminal mappings --
+	-- get out of terminal mode
+	map("t", "jk", "<C-\\><C-n>")
+	-- pick a hidden term
+	map("n", "<leader>W", ":Telescope terms <CR>")
+	-- Open terminals
+	map("n", "<leader>w", ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
+	-- terminal mappings end --
 
-    -- terminal mappings --
-    -- get out of terminal mode
-    map("t", "jk", "<C-\\><C-n>")
-    -- pick a hidden term
-    map("n", "<leader>W", ":Telescope terms <CR>")
-    -- Open terminals
-    map("n", "<leader>w", ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
-    -- terminal mappings end --
-
-    -- Add Packer commands because we are not loading it at startup
-    cmd("silent! command PackerClean lua require 'plugins' require('packer').clean()")
-    cmd("silent! command PackerCompile lua require 'plugins' require('packer').compile()")
-    cmd("silent! command PackerInstall lua require 'plugins' require('packer').install()")
-    cmd("silent! command PackerStatus lua require 'plugins' require('packer').status()")
-    cmd("silent! command PackerSync lua require 'plugins' require('packer').sync()")
-    cmd("silent! command PackerUpdate lua require 'plugins' require('packer').update()")
+	-- Add Packer commands because we are not loading it at startup
+	cmd("silent! command PackerClean lua require 'plugins' require('packer').clean()")
+	cmd("silent! command PackerCompile lua require 'plugins' require('packer').compile()")
+	cmd("silent! command PackerInstall lua require 'plugins' require('packer').install()")
+	cmd("silent! command PackerStatus lua require 'plugins' require('packer').status()")
+	cmd("silent! command PackerSync lua require 'plugins' require('packer').sync()")
+	cmd("silent! command PackerUpdate lua require 'plugins' require('packer').update()")
 end
 
 -- below are all plugin related mappings
@@ -83,7 +82,6 @@ M.comment = function()
 end
 
 M.lspconfig = function()
-
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
 	map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
@@ -119,7 +117,7 @@ M.cmp = function()
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = true,
 		}),
-        ["<C-I>"] = cmp.mapping(function(fallback)
+		["<C-I>"] = cmp.mapping(function(fallback)
 			if require("snippy").can_expand_or_advance() then
 				vim.fn.feedkeys(
 					vim.api.nvim_replace_termcodes("<Plug>(snippy-expand-or-advance)", true, true, true),
@@ -166,6 +164,84 @@ M.nvimtree = function()
 	map("n", "<C-n>", ":NvimTreeToggle <CR>")
 end
 
+local swap_next, swap_prev = (function()
+	local swap_objects = {
+		p = "@parameter.inner",
+		f = "@function.outer",
+		e = "@element",
+		-- Not ready, but I think it's my fault :)
+		-- v = "@variable",
+	}
+
+	local n, p = {}, {}
+	for key, obj in pairs(swap_objects) do
+		n[string.format("<M-Space><M-%s>", key)] = obj
+		p[string.format("<M-BS><M-%s>", key)] = obj
+	end
+
+	return n, p
+end)()
+M.treesitter = {
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "<M-w>", -- maps in normal mode to init the node/scope selection
+			node_incremental = "<M-w>", -- increment to the upper named parent
+			node_decremental = "<M-S-w>", -- decrement to the previous node
+			scope_incremental = "<M-e>", -- increment to the upper scope (as defined in locals.scm)
+		},
+	},
+	textobjects = {
+		enable = true,
+		move = {
+			enable = true,
+			set_jumps = true,
+
+			goto_next_start = {
+				["]p"] = "@parameter.inner",
+				["]m"] = "@function.outer",
+				["]]"] = "@class.outer",
+			},
+			goto_next_end = {
+				["]M"] = "@function.outer",
+				["]["] = "@class.outer",
+			},
+			goto_previous_start = {
+				["[p"] = "@parameter.inner",
+				["[m"] = "@function.outer",
+				["[["] = "@class.outer",
+			},
+			goto_previous_end = {
+				["[M"] = "@function.outer",
+				["[]"] = "@class.outer",
+			},
+		},
+
+		select = {
+			enable = true,
+			keymaps = {
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+
+				["ac"] = "@conditional.outer",
+				["ic"] = "@conditional.inner",
+
+				["aa"] = "@parameter.outer",
+				["ia"] = "@parameter.inner",
+
+				["av"] = "@variable.outer",
+				["iv"] = "@variable.inner",
+			},
+		},
+
+		swap = {
+			enable = true,
+			swap_next = swap_next,
+			swap_previous = swap_prev,
+		},
+	},
+}
+
 M.telescope = function()
 	map("n", "<leader>fb", ":Telescope buffers <CR>")
 	map("n", "<leader>ff", ":Telescope find_files <CR>")
@@ -173,7 +249,7 @@ M.telescope = function()
 	map("n", "<leader>fgc", ":Telescope git_commits <CR>")
 	map("n", "<leader>fgd", ":Telescope git_status <CR>")
 	map("n", "<leader>lg", ":Telescope live_grep <CR>")
-    map("n", "<leader>fw", ":Telescope grep_string <CR>")
+	map("n", "<leader>fw", ":Telescope grep_string <CR>")
 	map(
 		"n",
 		"<Leader><Space>",
