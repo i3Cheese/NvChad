@@ -211,4 +211,15 @@ M.locate_python_executable = function(cwd)
 	end
 end
 
+
+M.is_unsaved_buffers_exist = function ()
+  local buffers = vim.fn.getbufinfo({bufmodified = 1})
+  for i, buffer in ipairs(buffers) do
+      if buffer.changed == 1 and buffer.name ~= "" then
+          return true
+      end
+  end
+  return false
+end
+
 return M

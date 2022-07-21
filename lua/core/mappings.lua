@@ -21,7 +21,7 @@ M.misc = function()
 	map("", "<Up>", 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', { expr = true })
 
 	-- use ESC to turn off search highlighting
-	map("n", "<Esc>", ":noh <CR>")
+	map("n", "<Esc>", "<CMD>noh <CR>")
 
 	-- center cursor when moving (goto_definition)
 
@@ -29,34 +29,37 @@ M.misc = function()
 	map("n", "Y", "yg$")
 
 	-- easier navigation between windows
-	map("n", "<C-h>", "<C-w>h")
-	map("n", "<C-l>", "<C-w>l")
-	map("n", "<C-k>", "<C-w>k")
-	map("n", "<C-j>", "<C-w>j")
+	map({"n", "t"}, "<C-h>", "<C-w>h")
+	map({"n", "t"}, "<C-l>", "<C-w>l")
+	map({"n", "t"}, "<C-k>", "<C-w>k")
+	map({"n", "t"}, "<C-j>", "<C-w>j")
 
 	map("n", "<leader>k", "K", { noremap = true }) -- hover
 	map("n", "<leader>j", "J", { noremap = true }) -- join lines
 
-	map("n", "<leader>x", ":lua require('core.utils').close_buffer() <CR>") -- close  buffer
-	map("n", "<C-a>", ":%y+ <CR>") -- copy whole file content
-	map("n", "<leader>t", ":enew <CR>") -- new buffer
-	map("n", "<C-t>b", ":tabnew <CR>") -- new tabs
-	map("n", "<leader>nn", ":set nu! <CR>")
+	map("n", "<leader>x", "<CMD>lua require('core.utils').close_buffer() <CR>") -- close  buffer
+	map("n", "<C-a>", "<CMD>%y+ <CR>") -- copy whole file content
+	map("n", "<leader>t", "<CMD>enew <CR>") -- new buffer
+	map("n", "<C-t>b", "<CMD>tabnew <CR>") -- new tabs
+	map("n", "<leader>nn", "<CMD>set nu! <CR>")
 
 	map("v", "<C-c>", '"+y')
 	map("n", "<C-c>", '"+yy') -- copy curent line in normal mode
 	map("v", "<leader>fc", '"hy:%s/<C-r>h//gc<left><left><left>')
 	map("v", "<leader>fr", '"hy:%s/<C-r>h//g<left><left><left>')
 	map("v", "<leader>ff", '"hy/<C-r>h')
-	map("n", "<leader>nr", ":set rnu! <CR>") -- relative line numbers
+	map("n", "<leader>nr", "<CMD>set rnu! <CR>") -- relative line numbers
 
 	-- terminal mappings --
 	-- get out of terminal mode
-	map("t", "jk", "<C-\\><C-n>")
-	-- pick a hidden term
-	map("n", "<leader>W", ":Telescope terms <CR>")
+	map("t", "<C-q>", "<C-\\><C-n>")
+	map({"i", "v", "n", "s"}, "<C-q>", "<Esc>")
+
 	-- Open terminals
-	map("n", "<leader>w", ":execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
+	map("n", "<leader>w", "<CMD>execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
+
+    map("n", "s", [[:exec "normal i".nr2char(getchar())."\e"<CR>]])
+    map("n", "S", [[:exec "normal a".nr2char(getchar())."\e"<CR>]])
 	-- terminal mappings end --
 
 	-- Add Packer commands because we are not loading it at startup
@@ -71,30 +74,30 @@ end
 -- below are all plugin related mappings
 
 M.bufferline = function()
-	map("n", "<Tab>", ":BufferLineCycleNext <CR>")
-	map("n", "<S-Tab>", ":BufferLineCyclePrev <CR>")
+	map("n", "<Tab>", "<CMD>BufferLineCycleNext <CR>")
+	map("n", "<S-Tab>", "<CMD>BufferLineCyclePrev <CR>")
 end
 
 M.comment = function()
 	local m = "<leader>/"
-	map("n", m, ":lua require('Comment.api').toggle_current_linewise()<CR>")
-	map("v", m, ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
+	map("n", m, "<CMD>lua require('Comment.api').toggle_current_linewise()<CR>")
+	map("v", m, "<CMD>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
 end
 
 M.lspconfig = function()
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
-	map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-	map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-	map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>")
-	map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
-	map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-	map("n", "J", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-	map("n", "gc", "<cmd>lua vim.lsp.buf.type_definition()<CR>")
-	map("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>")
-	map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
-	map("n", "E", "<cmd>lua vim.diagnostic.open_float()<CR>")
-	map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>")
-	map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>")
+	map("n", "gD", "<CMD>lua vim.lsp.buf.declaration()<CR>")
+	map("n", "gd", "<CMD>lua vim.lsp.buf.definition()<CR>")
+	map("n", "gi", "<CMD>lua vim.lsp.buf.implementation()<CR>")
+	map("n", "gr", "<CMD>lua vim.lsp.buf.references()<CR>")
+	map("n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>")
+	map("n", "J", "<CMD>lua vim.lsp.buf.signature_help()<CR>")
+	map("n", "gc", "<CMD>lua vim.lsp.buf.type_definition()<CR>")
+	map("n", "<leader>r", "<CMD>lua vim.lsp.buf.rename()<CR>")
+	map("n", "<leader>ca", "<CMD>lua vim.lsp.buf.code_action()<CR>")
+	map("n", "E", "<CMD>lua vim.diagnostic.open_float()<CR>")
+	map("n", "[d", "<CMD>lua vim.diagnostic.goto_prev()<CR>")
+	map("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>")
 
 	map("n", "<Leader>cc", "<CMD>ClangdSwitchSourceHeader<CR>", { noremap = true, silent = true })
 	map("n", "<Leader>ll", "<CMD>lua vim.lsp.buf.formatting()<CR>", { noremap = true })
@@ -161,7 +164,7 @@ M.cmp = function()
 end
 
 M.nvimtree = function()
-	map("n", "<C-n>", ":NvimTreeToggle <CR>")
+	map("n", "<C-n>", "<CMD>NvimTreeToggle <CR>")
 end
 
 local swap_next, swap_prev = (function()
@@ -243,13 +246,16 @@ M.treesitter = {
 }
 
 M.telescope = function()
-	map("n", "<leader>fb", ":Telescope buffers <CR>")
-	map("n", "<leader>ff", ":Telescope find_files <CR>")
-	map("n", "<leader>fa", ":Telescope find_files follow=true no_ignore=true hidden=true <CR>")
-	map("n", "<leader>fgc", ":Telescope git_commits <CR>")
-	map("n", "<leader>fgd", ":Telescope git_status <CR>")
-	map("n", "<leader>lg", ":Telescope live_grep <CR>")
-	map("n", "<leader>fw", ":Telescope grep_string <CR>")
+	map("n", "<leader>W", "<CMD>Telescope terms <CR>") -- pick a hidden term
+	map("n", "<leader>bb", "<CMD>Telescope buffers <CR>")
+	map("n", "<leader>ff", "<CMD>Telescope find_files <CR>")
+	map("n", "<leader>fa", "<CMD>Telescope find_files follow=true no_ignore=true hidden=true <CR>")
+	map("n", "<leader>fgc", "<CMD>Telescope git_commits <CR>")
+	map("n", "<leader>fgd", "<CMD>Telescope git_status <CR>")
+	map("n", "<leader>lg", "<CMD>Telescope live_grep <CR>")
+	map("n", "<leader>fw", "<CMD>Telescope grep_string <CR>")
+	map("n", "<leader>fs", "<CMD>Telescope symbols <CR>")
+	vim.keymap.set({"n", "i", "c", "v", "o"}, "<C-s>", "<CMD>Telescope symbols<CR>")
 	map(
 		"n",
 		"<Leader><Space>",
@@ -263,7 +269,7 @@ M.symbols_outline = function()
 end
 
 M.dap = function()
-	map("n", "<leader>b", "<CMD>lua require'dap'.toggle_breakpoint()<CR>")
+	map("n", "<leader>db", "<CMD>lua require'dap'.toggle_breakpoint()<CR>")
 	map("n", "<F8>", "<CMD>lua require'dap'.step_over()<CR>")
 	map("n", "<F9>", "<CMD>lua require'dap'.step_into()<CR>")
 	map("n", "<F10>", "<CMD>lua require'dap'.step_out()<CR>")
@@ -277,7 +283,8 @@ end
 
 M.entrypoints = function()
 	-- nvimtree
-	map("n", "<C-n>", ":NvimTreeToggle <CR>")
+	map("n", "<C-n>", "<CMD>NnnExplorer <CR>")
+	map("n", "<leader>e", "<CMD>NnnPicker <CR>")
 
 	-- SymbolsOutline
 	map("n", "<Leader>m", "<CMD>SymbolsOutline<CR>", { silent = true })

@@ -18,15 +18,7 @@ local plugins = {
 	},
 
 	{
-		"NvChad/nvim-base16.lua",
-		commit = "489408c1d0a3d310ecddd383ddc4389df862f6ad",
-		config = function()
-			require("colors").init(require("core.config").ui.theme)
-		end,
-	},
-	{
 		"kyazdani42/nvim-web-devicons",
-		after = "nvim-base16.lua",
 		config = function()
 			require("plugins.configs.icons").setup()
 		end,
@@ -149,6 +141,7 @@ local plugins = {
 					-- null_ls.builtins.formatting.prettier,
 					null_ls.builtins.formatting.djhtml,
 					null_ls.builtins.formatting.gofmt,
+                    null_ls.builtins.hover.dictionary,
 				},
 			})
 		end,
@@ -227,6 +220,9 @@ local plugins = {
 		end,
 	},
 	{
+		"github/copilot.vim",
+	},
+	{
 		"hrsh7th/nvim-cmp",
 		config = function()
 			require("plugins.configs.cmp").setup()
@@ -277,21 +273,25 @@ local plugins = {
 	},
 	{
 		"numToStr/Comment.nvim",
-		module = "Comment",
 		config = function()
 			require("plugins.configs.others").comment()
 			require("core.mappings").comment()
 		end,
 	},
-
 	-- file managing , picker etc
 	{
-		"kyazdani42/nvim-tree.lua",
-		cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+		"luukvbaal/nnn.nvim",
 		config = function()
-			require("plugins.configs.nvimtree").setup()
+			require("plugins.configs.nnn").setup()
 		end,
 	},
+	-- {
+	-- 	"kyazdani42/nvim-tree.lua",
+	-- 	cmd = { "NvimTreeToggle", "NvimTreeFocus" },
+	-- 	config = function()
+	-- 		require("plugins.configs.nvimtree").setup()
+	-- 	end,
+	-- },
 
 	{
 		"nvim-telescope/telescope.nvim",
@@ -486,8 +486,10 @@ for _, plugin in ipairs(plugins) do
 end
 plugins = plugins_labeled
 
-return packer.startup(function(use)
-	for _, v in pairs(plugins) do
-		use(v)
-	end
-end)
+return function()
+	packer.startup(function(use)
+		for _, v in pairs(plugins) do
+			use(v)
+		end
+	end)
+end

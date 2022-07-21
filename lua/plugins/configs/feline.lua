@@ -379,6 +379,9 @@ M.setup = function()
 				dir_name,
 				file_name,
 			},
+            {
+                current_line_pos,
+            }
 		},
 	}
 

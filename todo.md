@@ -1,1 +1,1 @@
-* no j/k in terminal mode
+[*] no j/k in terminal mode

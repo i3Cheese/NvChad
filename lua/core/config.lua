@@ -16,13 +16,13 @@ config.options = {
 	ignorecase = true,
 	smartcase = true,
 	mapleader = " ",
-	mouse = "",
+	mouse = "a",
 	number = true,
 	numberwidth = 2,
 	relativenumber = true,
 	expandtab = true,
 	shiftwidth = 4,
-	smartindent = true,
+	smartindent = false,
 	tabstop = 4,
 	timeoutlen = 400,
 	updatetime = 250,
@@ -51,7 +51,7 @@ config.plugins = {
 	-- enable/disable plugins (false for disable)
 	status = {
         firenvim = false,
-		bufferline = true, -- manage and preview opened buffers
+		bufferline = false, -- manage and preview opened buffers
 	},
 	options = {
 		esc_insertmode_timeout = 300,

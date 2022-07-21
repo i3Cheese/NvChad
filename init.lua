@@ -4,6 +4,7 @@ if present then
 	impatient.enable_profile()
 end
 
+require("globals")
 local core_modules = {
 	"core.options",
 	"core.autocmds",
@@ -19,6 +20,11 @@ end
 
 vim.opt.runtimepath:append("~/.config/nvim/md-to-pdf.nvim/")
 require("md-to-pdf").setup()
+
+require("core.title").setup()
+require("colors").init()
+require("plugins")()
+
 
 -- non plugin mappings
 local mappings = require("core.mappings")

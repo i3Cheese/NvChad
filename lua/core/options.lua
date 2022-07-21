@@ -6,25 +6,11 @@ local options = config.options
 local ui = config.ui
 
 opt.spelllang = "en,ru"
-opt.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
+opt.langmap = "ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯЖ;ABCDEFGHIJKLMNOPQRSTUVWXYZ:,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz"
 
 -- GUI
 
 opt.guifont = ui.guifont .. ":" .. ui.guifontsize
-
-
-opt.title = true
-opt.titlelen = 40
-local function set_title()
-    vim.opt.titlestring = " " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-end
-set_title()
-
-local title_group = vim.api.nvim_create_augroup("TitleGroup", {clear = true})
-vim.api.nvim_create_autocmd("DirChanged", {
-    group = title_group,
-    callback = set_title
-})
 
 opt.clipboard = options.clipboard
 opt.cul = true -- cursor line
@@ -68,6 +54,11 @@ opt.updatetime = options.updatetime
 opt.whichwrap:append("<>[]hl")
 
 g.mapleader = options.mapleader
+
+g.python3_host_prog = "~/python/venvs/neovim/bin/python"
+g.pyindent_open_paren = 'shiftwidth()'
+g.pyindent_nested_paren = 'shiftwidth()'
+g.pyindent_continue = '0'
 
 -- disable some builtin vim plugins
 local disabled_built_ins = {
