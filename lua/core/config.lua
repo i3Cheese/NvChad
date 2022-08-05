@@ -5,6 +5,7 @@ local config = {}
 
 config.i3cheese = {
 	firenvim = vim.fn.exists("g:started_by_firenvim") == 1,
+    macos = vim.fn.has('macunix') == 1,
 }
 
 config.options = {
@@ -52,7 +53,11 @@ config.plugins = {
 	status = {
         firenvim = false,
 		bufferline = false, -- manage and preview opened buffers
+        
 	},
+    do_install = {
+        mac_switcher = config.i3cheese.macos, 
+    },
 	options = {
 		esc_insertmode_timeout = 300,
 	},
@@ -72,5 +77,6 @@ local firenvim_config = {
 if config.i3cheese.firenvim then
 	config = vim.tbl_deep_extend("force", config, firenvim_config)
 end
+
 
 return config

@@ -3,14 +3,14 @@ local M = {}
 M.setup = function()
 	require("nnn").setup({
 		explorer = {
-			cmd = "nnn -G", -- command overrride (-F1 flag is implied, -a flag is invalid!)
+			cmd = "nnn", -- command overrride (-F1 flag is implied, -a flag is invalid!)
 			width = 24, -- width of the vertical split
 			side = "topleft", -- or "botright", location of the explorer window
 			session = "", -- or "global" / "local" / "shared"
 			tabs = false, -- seperate nnn instance per tab
 		},
 		picker = {
-			cmd = "tmux new-session -- nnn", -- command override (-p flag is implied)
+			cmd = "nnn", -- command override (-p flag is implied)
             width = 80,
 			style = {
 				height = 0.8, -- ^

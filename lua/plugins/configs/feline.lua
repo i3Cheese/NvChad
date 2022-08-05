@@ -52,7 +52,6 @@ local file_name = {
 		fg = colors.white,
 		bg = colors.lightbg,
 	},
-	truncate_hide = true,
 	priority = 9,
 }
 
@@ -87,6 +86,7 @@ local git_branch = {
 	},
 	icon = "  ",
 	truncate_hide = true,
+    priority = 1,
 }
 
 local diff = {

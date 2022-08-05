@@ -5,6 +5,12 @@ local function cond_f(plugin_name)
 		return require("core.config").plugins.status[plugin_name]
 	end
 end
+local function disable_f(plugin_name)
+	return function()
+		return not require("core.config").plugins.do_install[plugin_name]
+	end
+end
+
 
 local plugins = {
 	{ "NvChad/extensions" },
@@ -309,6 +315,7 @@ local plugins = {
 	},
 	{
 		"callmekohei/switcher.nvim",
+        disable = disable_f("mac_switcher"),
 		run = function()
 			vim.cmd(
 				"py3 from pip._internal.cli.main import main as pipmain; pipmain(['install', 'pyobjc-core', 'pyobjc-framework-Cocoa']);"

@@ -35,16 +35,15 @@ local setup_lsp = function(capabilities)
 		}
 		if server.name == "pyright" then
 			opts.on_init = function(client)
-				client.config.settings.python.pythonPath = require("core.utils").locate_python_executable(
-					client.config.root_dir
-				)
+				client.config.settings.python.pythonPath =
+					require("core.utils").locate_python_executable(client.config.root_dir)
 			end
 		elseif server.name == "html" then
 			opts.filetypes = { "html", "htmldjango" }
 		elseif server.name == "sumneko_lua" then
-            local runtime_path = vim.split(package.path, ";")
-            table.insert(runtime_path, "lua/?.lua")
-            table.insert(runtime_path, "lua/?/init.lua")
+			local runtime_path = vim.split(package.path, ";")
+			table.insert(runtime_path, "lua/?.lua")
+			table.insert(runtime_path, "lua/?/init.lua")
 			opts.settings = {
 				Lua = {
 					runtime = {
@@ -94,6 +93,15 @@ M.setup = function()
 	setup_lsp(capabilities)
 
 	require("core.mappings").lspconfig()
+	lspconfig = require("lspconfig")
+	lspconfig.clangd.setup({
+		on_attach = on_attach,
+		capabilities = capabilities,
+		flags = {
+			debounce_text_changes = 150,
+		},
+		settings = {},
+	})
 end
 
 return M
