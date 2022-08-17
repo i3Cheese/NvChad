@@ -29,25 +29,30 @@ local dir_name = {
 	priority = 0,
 }
 
+local winbar = {}
+
+local file_name_provider = function()
+	local filename = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
+	local extension = vim.fn.expand("%:e")
+	local icon = require("nvim-web-devicons").get_icon(filename, extension)
+	if icon == nil then
+		icon = ""
+	end
+	return " " .. filename .. " "
+end
+local short_file_name_provider = function()
+	local filename = vim.fn.expand("%:t")
+	local extension = vim.fn.expand("%:e")
+	local icon = require("nvim-web-devicons").get_icon(filename, extension)
+	if icon == nil then
+		icon = ""
+	end
+	return " " .. filename .. " "
+end
+
 local file_name = {
-	provider = function()
-		local filename = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
-		local extension = vim.fn.expand("%:e")
-		local icon = require("nvim-web-devicons").get_icon(filename, extension)
-		if icon == nil then
-			icon = ""
-		end
-		return " " .. filename .. " "
-	end,
-	short_provider = function()
-		local filename = vim.fn.expand("%:t")
-		local extension = vim.fn.expand("%:e")
-		local icon = require("nvim-web-devicons").get_icon(filename, extension)
-		if icon == nil then
-			icon = ""
-		end
-		return " " .. filename .. " "
-	end,
+	provider = file_name_provider,
+	short_provider = short_file_name_provider,
 	hl = {
 		fg = colors.white,
 		bg = colors.lightbg,
@@ -63,7 +68,7 @@ local file_type = {
 		if icon == nil then
 			icon = ""
 		end
-        local filetype = vim.bo.filetype
+		local filetype = vim.bo.filetype
 		return "[" .. filetype:upper() .. "]"
 	end,
 	hl = {
@@ -86,7 +91,7 @@ local git_branch = {
 	},
 	icon = "  ",
 	truncate_hide = true,
-    priority = 1,
+	priority = 1,
 }
 
 local diff = {
@@ -174,8 +179,8 @@ local diagnostic = {
 local mode_colors = {
 	["n"] = { "NORMAL", colors.light_grey },
 	["no"] = { "N-PENDING", colors.red },
-	["i"] = { "INSERT", colors.dark_purple },
-	["ic"] = { "INSERT", colors.dark_purple },
+	["i"] = { "INSERT", colors.purple },
+	["ic"] = { "INSERT-C", colors.purple },
 	["t"] = { "TERMINAL", colors.green },
 	["v"] = { "VISUAL", colors.cyan },
 	["V"] = { "V-LINE", colors.cyan },
@@ -351,14 +356,27 @@ local current_line_pos = {
 	priority = 10,
 }
 
+local is_saved = {
+	provider = function()
+		return ""
+	end,
+
+	hl = function()
+		return {
+			fg = terIf(isBufSaved, colors.green, colors.red),
+			bg = colors.black,
+		}
+	end,
+}
+
 local M = {}
 M.setup = function()
-	-- components are divided in 3 sections
+	vim.opt.laststatus = 3
 	local components = {
 		active = {
 			{ -- left
 				dir_name,
-				file_name,
+                file_name,
 				file_type,
 				git_branch,
 				diff.add,
@@ -374,15 +392,15 @@ M.setup = function()
 				current_line_pos,
 			},
 		},
-		inactive = {
+		--[[ inactive = {
 			{ -- left
 				dir_name,
 				file_name,
 			},
-            {
-                current_line_pos,
-            }
-		},
+			{
+				current_line_pos,
+			},
+		}, ]]
 	}
 
 	feline.setup({
@@ -397,6 +415,7 @@ M.setup = function()
 		},
 		disable = {
 			filetypes = {
+				"^Alpha$",
 				"^NvimTree$",
 				"^packer$",
 				"^startify$",
@@ -408,6 +427,7 @@ M.setup = function()
 			bufnames = {},
 		},
 	})
+	feline.winbar.setup({})
 end
 
 return M

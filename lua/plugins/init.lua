@@ -11,7 +11,6 @@ local function disable_f(plugin_name)
 	end
 end
 
-
 local plugins = {
 	{ "NvChad/extensions" },
 	{ "nvim-lua/plenary.nvim" },
@@ -147,7 +146,7 @@ local plugins = {
 					-- null_ls.builtins.formatting.prettier,
 					null_ls.builtins.formatting.djhtml,
 					null_ls.builtins.formatting.gofmt,
-                    null_ls.builtins.hover.dictionary,
+					null_ls.builtins.hover.dictionary,
 				},
 			})
 		end,
@@ -280,7 +279,7 @@ local plugins = {
 	{
 		"numToStr/Comment.nvim",
 		config = function()
-			require("plugins.configs.others").comment()
+			require("Comment").setup()
 			require("core.mappings").comment()
 		end,
 	},
@@ -315,7 +314,7 @@ local plugins = {
 	},
 	{
 		"callmekohei/switcher.nvim",
-        disable = disable_f("mac_switcher"),
+		disable = disable_f("mac_switcher"),
 		run = function()
 			vim.cmd(
 				"py3 from pip._internal.cli.main import main as pipmain; pipmain(['install', 'pyobjc-core', 'pyobjc-framework-Cocoa']);"
@@ -483,6 +482,14 @@ local plugins = {
 	},
 	{
 		"tpope/vim-git",
+	},
+	{
+		"folke/todo-comments.nvim",
+		requires = "nvim-lua/plenary.nvim",
+		config = function()
+			require("todo-comments").setup({
+			})
+		end,
 	},
 }
 

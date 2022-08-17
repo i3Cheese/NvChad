@@ -80,8 +80,8 @@ end
 
 M.comment = function()
 	local m = "<leader>/"
-	map("n", m, "<CMD>lua require('Comment.api').toggle_current_linewise()<CR>")
-	map("v", m, "<CMD>lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<CR>")
+	map("n", m, "<Plug>(comment_toggle_linewise_current)")
+	map("v", m, "<Plug>(comment_toggle_blockwise_visual)")
 end
 
 M.lspconfig = function()
@@ -99,8 +99,8 @@ M.lspconfig = function()
 	map("n", "[d", "<CMD>lua vim.diagnostic.goto_prev()<CR>")
 	map("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>")
 
-	map("n", "<Leader>cc", "<CMD>ClangdSwitchSourceHeader<CR>", { noremap = true, silent = true })
-	map("n", "<Leader>ll", "<CMD>lua vim.lsp.buf.formatting()<CR>", { noremap = true })
+	map("n", "<leader>cc", "<CMD>ClangdSwitchSourceHeader<CR>", { noremap = true, silent = true })
+	map("n", "<leader>ll", "<CMD>lua vim.lsp.buf.formatting()<CR>", { noremap = true })
 end
 
 M.cmp = function()
