@@ -91,7 +91,7 @@ local git_branch = {
 	},
 	icon = "  ",
 	truncate_hide = true,
-	priority = 1,
+	priority = 8,
 }
 
 local diff = {
