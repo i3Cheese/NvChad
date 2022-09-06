@@ -83,28 +83,8 @@ M.close_buffer = function(force)
 
 	-- force deletion of terminal buffers to avoid the prompt
 	if force or vim.fn.getbufvar(buf, "&buftype") == "terminal" then
-		local chad_term, type = pcall(function()
-			return vim.api.nvim_buf_get_var(buf, "term_type")
-		end)
-
-		-- TODO this scope is error prone, make resilient
-		if chad_term then
-			if type == "wind" then
-				-- hide from bufferline
-				vim.cmd(string.format("%d bufdo setlocal nobl", buf))
-				-- switch to another buff
-				-- TODO switch to next buffer, this works too
-				vim.cmd("BufferLineCycleNext")
-			else
-				local cur_win = vim.fn.winnr()
-				-- we can close this window
-				vim.cmd(string.format("%d wincmd c", cur_win))
-				return
-			end
-		else
-			switch_buffer(windows, next_buf)
-			vim.cmd(string.format("bd! %d", buf))
-		end
+        switch_buffer(windows, next_buf)
+        vim.cmd(string.format("bd! %d", buf))
 	else
 		switch_buffer(windows, next_buf)
 		vim.cmd(string.format("silent! confirm bd %d", buf))

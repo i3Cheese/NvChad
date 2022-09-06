@@ -50,9 +50,9 @@ local apply_theme = function(theme)
 
 	-- Comments
 	if ui.italic_comments then
-		fg("Comment", grey_fg .. " gui=italic")
+		fg("Comment", theme.comment .. " gui=italic")
 	else
-		fg("Comment", grey_fg)
+		fg("Comment", theme.comment)
 	end
 
 	-- Disable cursor line
@@ -146,7 +146,7 @@ local apply_theme = function(theme)
 	fg_bg("TelescopePromptTitle", black, red)
 	fg_bg("TelescopeResultsTitle", darker_black, darker_black)
 
-	bg("TelescopeSelection", black2)
+	bg("TelescopeSelection", theme.grey)
 
 	-- keybinds cheatsheet
 

@@ -24,18 +24,18 @@ M.setup = function()
 
 		incremental_selection = mapping.incremental_selection,
 
-		-- context_commentstring = {
-		-- 	enable = true,
-		--
-		-- 	-- With Comment.nvim, we don't need to run this on the autocmd.
-		-- 	-- Only run it in pre-hook
-		-- 	enable_autocmd = false,
-		--
-		-- 	config = {
-		-- 		c = "// %s",
-		-- 		lua = "-- %s",
-		-- 	},
-		-- },
+		context_commentstring = {
+			enable = true,
+
+			-- With Comment.nvim, we don't need to run this on the autocmd.
+			-- Only run it in pre-hook
+			enable_autocmd = false,
+
+			config = {
+				c = "// %s",
+				lua = "-- %s",
+			},
+		},
 
 		textobjects = mapping.textobjects,
 	})

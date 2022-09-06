@@ -1,6 +1,3 @@
--- IMPORTANT NOTE : This is default config, so dont change anything here.
--- use custom/chadrc.lua instead
-
 local config = {}
 
 config.i3cheese = {

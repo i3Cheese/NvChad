@@ -25,6 +25,7 @@ local wombat = {
 	one_bg = "#1c1c1c",
 	one_bg2 = "#222222",
 	one_bg3 = "#292929",
+    comment = "#576757",
 	grey = "#4d4d4d",
 	grey_fg = "#575757",
 	grey_fg2 = "#616161",
