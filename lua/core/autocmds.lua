@@ -7,12 +7,19 @@ vim.cmd([[ au InsertLeave * set relativenumber ]])
 -- Don't show any numbers inside terminals
 vim.cmd([[ au TermOpen term://* setlocal nonumber norelativenumber | setfiletype terminal ]])
 
-shada_au = vim.api.nvim_create_augroup("SHADA", { clear = true })
+local shada_au_group = vim.api.nvim_create_augroup("SHADA", { clear = true })
 vim.api.nvim_create_autocmd("FocusLost", {
-	group = shada_au,
+	group = shada_au_group,
 	command = "wshada",
 })
 vim.api.nvim_create_autocmd("FocusGained", {
-	group = shada_au,
+	group = shada_au_group,
 	command = "rshada",
+})
+
+local formating_au_group = vim.api.nvim_create_augroup("FormatingGroup", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = {"*.py", "*.js"},
+    group = formating_au_group,
+    callback = vim.lsp.buf.formatting
 })
