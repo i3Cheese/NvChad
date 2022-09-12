@@ -29,10 +29,10 @@ M.misc = function()
 	map("n", "Y", "yg$")
 
 	-- easier navigation between windows
-	map({"n", "t"}, "<C-h>", "<C-w>h")
-	map({"n", "t"}, "<C-l>", "<C-w>l")
-	map({"n", "t"}, "<C-k>", "<C-w>k")
-	map({"n", "t"}, "<C-j>", "<C-w>j")
+	map({ "n", "t" }, "<C-h>", "<C-w>h")
+	map({ "n", "t" }, "<C-l>", "<C-w>l")
+	map({ "n", "t" }, "<C-k>", "<C-w>k")
+	map({ "n", "t" }, "<C-j>", "<C-w>j")
 
 	map("n", "<leader>k", "K", { noremap = true }) -- hover
 	map("n", "<leader>j", "J", { noremap = true }) -- join lines
@@ -53,13 +53,13 @@ M.misc = function()
 	-- terminal mappings --
 	-- get out of terminal mode
 	map("t", "<C-q>", "<C-\\><C-n>")
-	map({"i", "v", "n", "s"}, "<C-q>", "<Esc>")
+	map({ "i", "v", "n", "s" }, "<C-q>", "<Esc>")
 
 	-- Open terminals
 	map("n", "<leader>w", "<CMD>execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
 
-    map("n", "s", [[:exec "normal i".nr2char(getchar())."\e"<CR>]])
-    map("n", "S", [[:exec "normal a".nr2char(getchar())."\e"<CR>]])
+	map("n", "s", [[:exec "normal i".nr2char(getchar())."\e"<CR>]])
+	map("n", "S", [[:exec "normal a".nr2char(getchar())."\e"<CR>]])
 	-- terminal mappings end --
 
 	-- Add Packer commands because we are not loading it at startup
@@ -100,7 +100,14 @@ M.lspconfig = function()
 	map("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>")
 
 	map("n", "<leader>cc", "<CMD>ClangdSwitchSourceHeader<CR>", { noremap = true, silent = true })
-	map("n", "<leader>ll", "<CMD>lua vim.lsp.buf.formatting()<CR>", { noremap = true })
+	local py_formating_group = vim.api.nvim_create_augroup("PyFormatingGroup", { clear = true })
+	vim.api.nvim_create_autocmd("FileType", {
+		group = py_formating_group,
+		callback = function()
+			vim.api.nvim_buf_set_keymap(0, "n", "<Leader>lp", "<CMD>PyrightOrganizeImports<CR>", {})
+		end,
+	})
+	map("n", "<leader>ll", "<CMD>lua vim.lsp.buf.format()<CR>", { noremap = true })
 end
 
 M.cmp = function()
@@ -255,7 +262,7 @@ M.telescope = function()
 	map("n", "<leader>lg", "<CMD>Telescope live_grep <CR>")
 	map("n", "<leader>fw", "<CMD>Telescope grep_string <CR>")
 	map("n", "<leader>fs", "<CMD>Telescope symbols <CR>")
-	vim.keymap.set({"n", "i", "c", "v", "o"}, "<C-s>", "<CMD>Telescope symbols<CR>")
+	vim.keymap.set({ "n", "i", "c", "v", "o" }, "<C-s>", "<CMD>Telescope symbols<CR>")
 	map(
 		"n",
 		"<Leader><Space>",

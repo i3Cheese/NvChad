@@ -142,7 +142,6 @@ local plugins = {
 					}),
 					null_ls.builtins.formatting.brittany,
 					null_ls.builtins.code_actions.gitsigns,
-					null_ls.builtins.formatting.stylua,
 					-- null_ls.builtins.formatting.prettier,
 					null_ls.builtins.formatting.djhtml,
 					null_ls.builtins.formatting.gofmt,
@@ -161,7 +160,7 @@ local plugins = {
 	{
 		"theHamsta/nvim-dap-virtual-text",
 		config = function()
-			require("nvim-dap-virtual-text").setup()
+			require("nvim-dap-virtual-text").setup({})
 		end,
 		after = "nvim-dap",
 	},
