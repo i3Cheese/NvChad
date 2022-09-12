@@ -88,6 +88,7 @@ end
 
 local function setup_cpp(opts)
     opts = vim.deepcopy(opts)
+    opts.capabilities.offsetEncoding = { "utf-16" }
     require("lspconfig").clangd.setup(opts)
 end
 

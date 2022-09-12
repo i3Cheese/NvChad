@@ -107,7 +107,7 @@ M.lspconfig = function()
 			vim.api.nvim_buf_set_keymap(0, "n", "<Leader>lp", "<CMD>PyrightOrganizeImports<CR>", {})
 		end,
 	})
-	map("n", "<leader>ll", "<CMD>lua vim.lsp.buf.formatting()<CR>", { noremap = true })
+	map("n", "<leader>ll", "<CMD>lua vim.lsp.buf.format()<CR>", { noremap = true })
 end
 
 M.cmp = function()
