@@ -53,7 +53,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 local function enable_cpp_autoformat()
-    vim.loop.fs_access("./.clang-tidy", "R", function(err, permission)
+    vim.loop.fs_access("./.clang-format", "R", function(err, permission)
         _ = err
         do_cpp_formating = permission
     end)
