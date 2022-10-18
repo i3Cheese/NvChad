@@ -12,14 +12,14 @@ local function disable_f(plugin_name)
 end
 
 local plugins = {
-	{ "NvChad/extensions" },
 	{ "nvim-lua/plenary.nvim" },
 	{ "lewis6991/impatient.nvim" },
-	{ "nathom/filetype.nvim" },
+	{ "nathom/filetype.nvim" , commit = "f80b9ef2f"},
 
 	{
 		"wbthomason/packer.nvim",
 		event = "VimEnter",
+        commit = "de109156cfa634ce0256ea4b6a7c32f9186e2f10"
 	},
 
 	{
@@ -65,24 +65,18 @@ local plugins = {
 	},
 
 	{
-		"NvChad/nvim-colorizer.lua",
-		event = "BufRead",
-		config = function()
-			require("plugins.configs.others").colorizer()
-		end,
-	},
-
-	{
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufRead", "BufNewFile" },
 		config = function()
 			require("plugins.configs.treesitter").setup()
 		end,
 		run = ":TSUpdate",
+        commit = "addc129a",
 	},
 	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 	{ "nvim-treesitter/nvim-treesitter-refactor" },
 	{ "nvim-treesitter/nvim-treesitter-context" },
+    { "p00f/nvim-ts-rainbow" },
 
 	-- git stuff
 	{

@@ -37,7 +37,7 @@ local formating_au_group = vim.api.nvim_create_augroup("FormatingGroup", { clear
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = { "*.py", "*.js" },
     group = formating_au_group,
-    callback = vim.lsp.buf.formatting
+    callback = vim.lsp.buf.format
 })
 
 local do_cpp_formating = false
@@ -47,7 +47,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     group = formating_au_group,
     callback = function()
         if do_cpp_formating then
-            vim.lsp.buf.formatting()
+            vim.lsp.buf.format()
         end
     end,
 })
