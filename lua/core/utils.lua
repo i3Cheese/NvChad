@@ -185,7 +185,7 @@ end
 M.locate_python_executable = function(cwd)
 	local venv = M.locate_python_venv(cwd)
 	if venv == nil then
-		return "/usr/bin/python3"
+		return "python3"
 	else
 		return venv .. "bin/python"
 	end

@@ -14,7 +14,7 @@ end
 local plugins = {
 	{ "nvim-lua/plenary.nvim" },
 	{ "lewis6991/impatient.nvim" },
-	{ "nathom/filetype.nvim" , commit = "f80b9ef2f"},
+	-- { "nathom/filetype.nvim" },
 
 	{
 		"wbthomason/packer.nvim",
@@ -216,9 +216,6 @@ local plugins = {
 		config = function()
 			require("core.mappings").symbols_outline()
 		end,
-	},
-	{
-		"github/copilot.vim",
 	},
 	{
 		"hrsh7th/nvim-cmp",
@@ -484,6 +481,9 @@ local plugins = {
 			})
 		end,
 	},
+    {
+        "eandrju/cellular-automaton.nvim"
+    }
 }
 
 --label plugins for operational assistance
