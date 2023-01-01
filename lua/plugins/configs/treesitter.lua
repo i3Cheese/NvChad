@@ -82,6 +82,7 @@ M.setup = function()
 
 	local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
 	ft_to_parser.htmldjango = "html" -- the someft filetype will use the python parser and queries.
+	ft_to_parser.typescriptreact = "typescript" -- the someft filetype will use the python parser and queries.
 end
 
 return M

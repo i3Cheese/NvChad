@@ -41,6 +41,11 @@ local function setup_html(opts)
     require("lspconfig").html.setup(opts)
 end
 
+local function setup_js(opts)
+    opts = vim.deepcopy(opts)
+    require("lspconfig").tsserver.setup(opts)
+end
+
 local function setup_latex(opts)
     opts = vim.deepcopy(opts)
     opts.settings = {
@@ -123,6 +128,7 @@ local function setup_servers()
     setup_lua(opts)
     setup_cpp(opts)
     setup_latex(opts)
+    setup_js(opts)
 end
 
 M.setup = function()

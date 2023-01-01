@@ -65,3 +65,13 @@ vim.api.nvim_create_autocmd("DirChanged", {
 })
 
 enable_cpp_autoformat()
+
+local filetypes_group = vim.api.nvim_create_augroup("FilytypesGroup", { clear = true })
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "typescriptreact", "typescript", "javascript", "javascriptreact" },
+    group = filetypes_group,
+    callback = function ()
+        vim.api.nvim_buf_set_option(0, 'shiftwidth', 2)
+    end
+})

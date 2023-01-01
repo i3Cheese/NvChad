@@ -76,7 +76,6 @@ local plugins = {
 	{ "nvim-treesitter/nvim-treesitter-textobjects" },
 	{ "nvim-treesitter/nvim-treesitter-refactor" },
 	{ "nvim-treesitter/nvim-treesitter-context" },
-    { "p00f/nvim-ts-rainbow" },
 
 	-- git stuff
 	{
@@ -135,7 +134,7 @@ local plugins = {
 						extra_args = { "--ignore=E402" },
 					}),
 					null_ls.builtins.formatting.brittany,
-					null_ls.builtins.code_actions.gitsigns,
+					-- null_ls.builtins.code_actions.gitsigns,
 					-- null_ls.builtins.formatting.prettier,
 					null_ls.builtins.formatting.djhtml,
 					null_ls.builtins.formatting.gofmt,
