@@ -18,9 +18,6 @@ for _, module in ipairs(core_modules) do
 	end
 end
 
--- vim.opt.runtimepath:append("~/.config/nvim/md-to-pdf.nvim/")
-require("md-to-pdf").setup()
-
 require("core.title").setup()
 require("colors").init()
 require("plugins")()
