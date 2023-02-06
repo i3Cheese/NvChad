@@ -107,7 +107,12 @@ local plugins = {
 			require("plugins.configs.lspconfig").setup()
 		end,
 	},
-
+    {
+        "github/copilot.vim",
+        setup = function ()
+			require("core.mappings").copilot()
+        end
+    },
 	{
 		"williamboman/nvim-lsp-installer",
 		config = function()

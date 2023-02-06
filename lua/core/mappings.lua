@@ -300,4 +300,9 @@ M.entrypoints = function()
 	map("n", "<F5>", "<CMD>RunDebug<CR>")
 end
 
+M.copilot = function ()
+    vim.g.copilot_no_tab_map = true
+    map("i", "<M-p>", 'copilot#Accept("\\<CR>")', {expr = true, silent = true})
+end
+
 return M
