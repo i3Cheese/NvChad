@@ -75,6 +75,7 @@ M.signature = function()
 	local present, lspsignature = pcall(require, "lsp_signature")
 	if present then
 		local default = {
+            always_trigger = false,
 			bind = true,
 			doc_lines = 0,
 			floating_window = true,
