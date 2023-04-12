@@ -69,6 +69,13 @@ M.misc = function()
 	cmd("silent! command PackerStatus lua require 'plugins' require('packer').status()")
 	cmd("silent! command PackerSync lua require 'plugins' require('packer').sync()")
 	cmd("silent! command PackerUpdate lua require 'plugins' require('packer').update()")
+
+    map("n", "<A-j>", "<CMD>m+<CR>==")
+    map("n", "<A-k>", "<CMD>m-2<CR>==")
+    map("i", "<A-j>", "<Esc><CMD>m+<CR>==gi")
+    map("i", "<A-k>", "<Esc><CMD>m-2<CR>==gi")
+    map("v", "<A-j>", ":m'>+<CR>gv=gv")
+    map("v", "<A-k>", ":m-2<CR>gv=gv")
 end
 
 -- below are all plugin related mappings

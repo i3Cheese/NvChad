@@ -113,6 +113,7 @@ local apply_theme = function(theme)
 
 	-- Lsp diagnostics
 
+    fg("LspCodeLens", grey_fg)
 	fg("DiagnosticHint", purple)
 	fg("DiagnosticError", red)
 	fg("DiagnosticWarn", yellow)
@@ -400,6 +401,7 @@ local function apply_base16_theme(theme)
 	highlight("TSStrike", theme.base00, nil, "strikethrough", nil)
 	highlight("TSLiteral", theme.base09, nil, "none", nil)
 	highlight("TSURI", theme.base09, nil, "underline", nil)
+    highlight("TSType", theme.sun, nil, "none", nil)
 	highlight("TSTypeBuiltin", theme.base0A, nil, "none", nil)
 	highlight("TSVariableBuiltin", theme.base09, nil, "none", nil)
 	highlight("TSDefinition", nil, nil, "underline", theme.base04)

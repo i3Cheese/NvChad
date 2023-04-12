@@ -46,18 +46,6 @@ local plugins = {
     },
 
     {
-        "akinsho/bufferline.nvim",
-        disable = false,
-        cond = function()
-            return require("core.config").plugins.status.bufferline
-        end,
-        config = function()
-            require("plugins.configs.bufferline").setup()
-            require("core.mappings").bufferline()
-        end,
-    },
-
-    {
         "lukas-reineke/indent-blankline.nvim",
         event = "BufRead",
         config = function()
@@ -149,7 +137,7 @@ local plugins = {
             })
         end,
     },
-    {
+    --[[ {
         "mfussenegger/nvim-dap",
         config = function()
             require("plugins.configs.dap").dap.setup()
@@ -200,7 +188,7 @@ local plugins = {
                 pythonPath = require("core.utils").locate_python_executable(),
             })
         end,
-    },
+    }, ]]
 
     {
         "danymat/neogen",
@@ -306,22 +294,6 @@ local plugins = {
     {
         "ellisonleao/glow.nvim",
         cmd = "Glow",
-    },
-    {
-        "callmekohei/switcher.nvim",
-        disable = disable_f("mac_switcher"),
-        run = function()
-            vim.cmd(
-                "py3 from pip._internal.cli.main import main as pipmain; pipmain(['install', 'pyobjc-core', 'pyobjc-framework-Cocoa']);"
-            )
-            vim.cmd(":UpdateRemotePlugins")
-        end,
-        setup = function()
-            vim.g.switcher_keyboardInputSource = "com.apple.keylayout.ABC"
-        end,
-        config = function()
-            vim.cmd([[ autocmd InsertLeave * :call SwitchEnglish('') ]])
-        end,
     },
     {
         "Shatur/neovim-session-manager",
@@ -463,16 +435,6 @@ local plugins = {
         end,
     },
     {
-        "folke/zen-mode.nvim",
-        config = function()
-            require("plugins.configs.zen").setup()
-        end,
-        cmd = { "ZenMode" },
-    },
-    {
-        "alec-gibson/nvim-tetris",
-    },
-    {
         "tpope/vim-fugitive",
     },
     {
@@ -492,7 +454,7 @@ local plugins = {
     {
         "dbakker/vim-projectroot",
         config = function()
-            vim.g.rootmarkers = {".git"}
+            vim.g.rootmarkers = { ".git" }
             vim.api.nvim_create_autocmd("BufEnter", {
                 pattern = "*",
                 callback = function()
@@ -504,6 +466,23 @@ local plugins = {
             -- vim.cmd(":ProjectRootCD")
         end,
     },
+    {
+        "MrcJkb/haskell-tools.nvim",
+        requires = {
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim',
+        },
+        branch = '1.x.x',
+    },
+    {
+        "brenoprata10/nvim-highlight-colors",
+        config = function()
+            require("nvim-highlight-colors").setup({
+                render = 'background', -- or 'foreground' or 'first_column'
+                enable_named_colors = true,
+            })
+        end,
+    }
 }
 
 --label plugins for operational assistance
