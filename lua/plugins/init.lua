@@ -482,7 +482,17 @@ local plugins = {
                 enable_named_colors = true,
             })
         end,
-    }
+    },
+    {
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+        "ThePrimeagen/harpoon",
+        config = function()
+            require("plugins.configs.harpoon").setup()
+        end,
+    },
 }
 
 --label plugins for operational assistance

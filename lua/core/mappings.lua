@@ -56,7 +56,7 @@ M.misc = function()
 	map({ "i", "v", "n", "s" }, "<C-q>", "<Esc>")
 
 	-- Open terminals
-	map("n", "<leader>w", "<CMD>execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
+	-- map("n", "<leader>w", "<CMD>execute 'terminal' | let b:term_type = 'wind' | startinsert <CR>")
 
 	map("n", "s", [[:exec "normal i".nr2char(getchar())."\e"<CR>]])
 	map("n", "S", [[:exec "normal a".nr2char(getchar())."\e"<CR>]])
@@ -310,6 +310,22 @@ end
 M.copilot = function ()
     vim.g.copilot_no_tab_map = true
     map("i", "<M-p>", 'copilot#Accept("\\<CR>")', {expr = true, silent = true})
+end
+
+M.harpoon = function ()
+    -- map("n", "<leader>h", "<CMD>lua require('harpoon.ui').toggle_quick_menu()<CR>")
+    map("n", "<leader>a", "<CMD>lua require('harpoon.mark').add_file()<CR>")
+    vim.keymap.set("n", "m", function ()
+        if vim.v.count == 0 then
+            require('harpoon.ui').toggle_quick_menu()
+        else
+            require('harpoon.ui').nav_file(vim.v.count)
+        end
+    end)
+    vim.keymap.set("n", "<leader>w", function ()
+        require('harpoon.term').gotoTerminal(vim.v.count + 1)
+        vim.cmd("startinsert")
+    end)
 end
 
 return M

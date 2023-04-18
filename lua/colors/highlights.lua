@@ -114,7 +114,7 @@ local apply_theme = function(theme)
 	-- Lsp diagnostics
 
     fg("LspCodeLens", grey_fg)
-	fg("DiagnosticHint", purple)
+	fg("DiagnosticHint", theme.comment)
 	fg("DiagnosticError", red)
 	fg("DiagnosticWarn", yellow)
 	fg("DiagnosticInformation", green)
