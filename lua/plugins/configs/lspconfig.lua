@@ -11,26 +11,11 @@ local function on_attach(client, bufnr)
     buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 end
 
-local function setup_lsp_installer()
-    local lsp_installer = require("nvim-lsp-installer")
-
-    lsp_installer.settings({
-        ui = {
-            icons = {
-                server_installed = "﫟",
-                server_pending = "",
-                server_uninstalled = "✗",
-            },
-        },
-    })
-    lsp_installer.setup({})
-end
-
 local function setup_pyright(opts)
     opts = vim.deepcopy(opts)
     opts.on_init = function(client)
         client.config.settings.python.pythonPath =
-        require("core.utils").locate_python_executable(client.config.root_dir)
+            require("core.utils").locate_python_executable(client.config.root_dir)
     end
     require("lspconfig").pyright.setup(opts)
 end
@@ -44,6 +29,11 @@ end
 local function setup_js(opts)
     opts = vim.deepcopy(opts)
     require("lspconfig").tsserver.setup(opts)
+end
+
+local function setup_rust_analyser(opts)
+    opts = vim.deepcopy(opts)
+    require("lspconfig").rust_analyzer.setup(opts)
 end
 
 local function setup_latex(opts)
@@ -64,36 +54,40 @@ end
 
 local function setup_lua(opts)
     opts = vim.deepcopy(opts)
-    local runtime_path = vim.split(package.path, ";")
-    table.insert(runtime_path, "lua/?.lua")
-    table.insert(runtime_path, "lua/?/init.lua")
-    opts.settings = {
-        Lua = {
-            runtime = {
-                version = "LuaJIT",
-                path = runtime_path,
-            },
-            completion = {
-                callSnippet = "Replace",
-            },
-            diagnostics = {
-                enable = true,
-                globals = { "vim", "use" },
-            },
-            workspace = {
-                library = vim.api.nvim_get_runtime_file("", true),
-                maxPreload = 10000,
-                preloadFileSize = 10000,
-            },
-            telemetry = { enable = false },
-        },
-    }
-    require("lspconfig").sumneko_lua.setup(opts)
+    opts.on_init = function(client)
+        local path = client.workspace_folders[1].name
+        if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+            client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+                Lua = {
+                    runtime = {
+                        -- Tell the language server which version of Lua you're using
+                        -- (most likely LuaJIT in the case of Neovim)
+                        version = 'LuaJIT'
+                    },
+                    -- Make the server aware of Neovim runtime files
+                    workspace = {
+                        checkThirdParty = false,
+                        library = {
+                            vim.env.VIMRUNTIME
+                            -- "${3rd}/luv/library"
+                            -- "${3rd}/busted/library",
+                        }
+                        -- or pull in all of 'runtimepath'. NOTE: this is a lot slower
+                        -- library = vim.api.nvim_get_runtime_file("", true)
+                    }
+                }
+            })
+
+            client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+        end
+        return true
+    end
+    require("lspconfig").lua_ls.setup(opts)
 end
 
 local function setup_cpp(opts)
     opts = vim.deepcopy(opts)
-    opts.cmd = {"clangd"}
+    opts.cmd = { "clangd" }
     opts.capabilities.offsetEncoding = { "utf-16" }
     require("lspconfig").clangd.setup(opts)
 end
@@ -129,11 +123,11 @@ local function setup_servers()
     setup_cpp(opts)
     setup_latex(opts)
     setup_js(opts)
+    setup_rust_analyser(opts)
 end
 
 M.setup = function()
     require("plugins.configs.others").lsp_handlers()
-    setup_lsp_installer()
     setup_servers()
 
     require("core.mappings").lspconfig()

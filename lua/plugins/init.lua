@@ -52,6 +52,18 @@ local plugins = {
             require("plugins.configs.others").blankline()
         end,
     },
+    {
+        'rush-rs/tree-sitter-asm',
+        config = function()
+            require('nvim-treesitter.parsers').get_parser_configs().asm = {
+                install_info = {
+                    url = 'https://github.com/rush-rs/tree-sitter-asm.git',
+                    files = { 'src/parser.c' },
+                    branch = 'main',
+                },
+            }
+        end
+    },
 
     {
         "nvim-treesitter/nvim-treesitter",
@@ -60,7 +72,6 @@ local plugins = {
             require("plugins.configs.treesitter").setup()
         end,
         run = ":TSUpdate",
-        commit = "addc129a",
     },
     { "nvim-treesitter/nvim-treesitter-textobjects" },
     { "nvim-treesitter/nvim-treesitter-refactor" },
@@ -84,7 +95,6 @@ local plugins = {
         "neovim/nvim-lspconfig",
         module = "lspconfig",
         opt = true,
-        after = "nvim-lsp-installer",
         setup = function()
             require("core.utils").packer_lazy_load("nvim-lspconfig")
             -- reload the current file so lsp actually starts for it
@@ -101,12 +111,6 @@ local plugins = {
         setup = function()
             require("core.mappings").copilot()
         end
-    },
-    {
-        "williamboman/nvim-lsp-installer",
-        config = function()
-            -- require('custom.plugins.lspconfig').config_lsp_installer()
-        end,
     },
 
     -- {
@@ -129,15 +133,16 @@ local plugins = {
                     }),
                     null_ls.builtins.formatting.brittany,
                     -- null_ls.builtins.code_actions.gitsigns,
-                    -- null_ls.builtins.formatting.prettier,
+                    null_ls.builtins.formatting.prettier,
                     null_ls.builtins.formatting.djhtml,
                     null_ls.builtins.formatting.gofmt,
+                    null_ls.builtins.formatting.rustfmt,
                     null_ls.builtins.hover.dictionary,
                 },
             })
         end,
     },
-    --[[ {
+    {
         "mfussenegger/nvim-dap",
         config = function()
             require("plugins.configs.dap").dap.setup()
@@ -160,6 +165,12 @@ local plugins = {
         end,
     },
     {
+        "ldelossa/nvim-dap-projects",
+        config = function()
+            require('nvim-dap-projects').search_project_config()
+        end
+    },
+    {
         "nvim-telescope/telescope-dap.nvim",
         requires = { "nvim-dap", "telescope.nvim" },
         after = "nvim-dap",
@@ -170,25 +181,41 @@ local plugins = {
         end,
     },
     {
-        "mfussenegger/nvim-dap-python",
-        requires = { "nvim-dap" },
-        after = "nvim-dap",
+        "simrat39/rust-tools.nvim",
         config = function()
-            require("dap-python").setup("~/python/venvs/debugpy/bin/python")
-            local dap = require("dap")
-            table.insert(dap.configurations.python, {
-                -- The first three options are required by nvim-dap
-                type = "python", -- the type here established the link to the adapter definition: `dap.adapters.python`
-                request = "launch",
-                name = "Launch file in venv",
-
-                -- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
-
-                program = "${file}", -- This configuration will launch the current file if used.
-                pythonPath = require("core.utils").locate_python_executable(),
+            local rt = require("rust-tools")
+            rt.setup({
             })
+        end
+    },
+    {
+        'saecki/crates.nvim',
+        tag = 'stable',
+        requires = { 'nvim-lua/plenary.nvim' },
+        config = function()
+            require('crates').setup()
         end,
-    }, ]]
+    },
+    -- {
+    --     "mfussenegger/nvim-dap-python",
+    --     requires = { "nvim-dap" },
+    --     after = "nvim-dap",
+    --     config = function()
+    --         require("dap-python").setup("~/python/venvs/debugpy/bin/python")
+    --         local dap = require("dap")
+    --         table.insert(dap.configurations.python, {
+    --             -- The first three options are required by nvim-dap
+    --             type = "python", -- the type here established the link to the adapter definition: `dap.adapters.python`
+    --             request = "launch",
+    --             name = "Launch file in venv",
+    --
+    --             -- Options below are for debugpy, see https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
+    --
+    --             program = "${file}", -- This configuration will launch the current file if used.
+    --             pythonPath = require("core.utils").locate_python_executable(),
+    --         })
+    --     end,
+    -- },
 
     {
         "danymat/neogen",
@@ -299,17 +326,17 @@ local plugins = {
         "Shatur/neovim-session-manager",
         config = function()
             require("session_manager").setup({
-                path_replacer = "__", -- The character to which the path separator will be replaced for session files.
-                colon_replacer = "++", -- The character to which the colon symbol will be replaced for session files.
+                path_replacer = "__",                                                    -- The character to which the path separator will be replaced for session files.
+                colon_replacer = "++",                                                   -- The character to which the colon symbol will be replaced for session files.
                 autoload_mode = require("session_manager.config").AutoloadMode.Disabled, -- Define what to do when Neovim is started without arguments. Possible values: Disabled, CurrentDir, LastSession
-                autosave_last_session = true, -- Automatically save last session on exit and on session switch.
-                autosave_ignore_not_normal = true, -- Plugin will not save a session when no buffers are opened, or all of them aren't writable or listed.
-                autosave_ignore_filetypes = { -- All buffers of these file types will be closed before the session is saved.
+                autosave_last_session = true,                                            -- Automatically save last session on exit and on session switch.
+                autosave_ignore_not_normal = true,                                       -- Plugin will not save a session when no buffers are opened, or all of them aren't writable or listed.
+                autosave_ignore_filetypes = {                                            -- All buffers of these file types will be closed before the session is saved.
                     "gitcommit",
                     "alpha",
                 },
                 autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
-                max_path_length = 80, -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
+                max_path_length = 80,             -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
             })
         end,
     },

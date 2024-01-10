@@ -315,6 +315,8 @@ end
 M.harpoon = function ()
     -- map("n", "<leader>h", "<CMD>lua require('harpoon.ui').toggle_quick_menu()<CR>")
     map("n", "<leader>a", "<CMD>lua require('harpoon.mark').add_file()<CR>")
+    map("n", "<A-,>", "<CMD>lua require('harpoon.ui').nav_prev()<CR>")
+    map("n", "<A-.>", "<CMD>lua require('harpoon.ui').nav_next()<CR>")
     vim.keymap.set("n", "m", function ()
         if vim.v.count == 0 then
             require('harpoon.ui').toggle_quick_menu()

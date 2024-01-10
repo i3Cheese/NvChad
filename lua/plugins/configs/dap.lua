@@ -5,51 +5,51 @@ M.dap = {
 		local dap = require("dap")
 		vim.cmd("silent! command RunDebug lua require'dap'.continue()")
 		vim.cmd("silent! command StopDebug lua require'dap'.disconnect()")
-
-		dap.adapters.lldb = {
-			type = "executable",
-			command = "lldb-vscode",
-			name = "lldb",
-			-- enrich_config = function(config, on_config)
-			--     if (config.cmd ~= nil) then
-			--         vim.cmd(config.cmd)
-			--     end
-			--     on_config(config)
-			-- end
-		}
-		dap.configurations.cpp = {
-			{
-				name = "Build and launch",
-				type = "lldb",
-				request = "launch",
-				program = "${fileDirname}/${fileBasenameNoExtension}",
-				cwd = "${fileDirname}",
-				stopOnEntry = false,
-				cmd = "!compcpp ${file}",
-				args = {},
-				runInTerminal = false,
-			},
-			{
-				name = "Launch",
-				type = "lldb",
-				request = "launch",
-				program = function()
-					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-				end,
-				cwd = "${workspaceFolder}",
-				stopOnEntry = false,
-				args = {},
-			},
-			{
-				-- If you get an "Operation not permitted" error using this, try disabling YAMA:
-				--  echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
-				name = "Attach to process",
-				type = "lldb", -- Adjust this to match your adapter name (`dap.adapters.<name>`)
-				request = "attach",
-				pid = require("dap.utils").pick_process,
-				args = {},
-			},
-		}
+		--
+		-- dap.adapters.lldb = {
+		-- 	type = "executable",
+		-- 	command = "lldb-vscode",
+		-- 	name = "lldb",
+		-- 	-- enrich_config = function(config, on_config)
+		-- 	--     if (config.cmd ~= nil) then
+		-- 	--         vim.cmd(config.cmd)
+		-- 	--     end
+		-- 	--     on_config(config)
+		-- 	-- end
+		-- }
+		-- dap.configurations.cpp = {
+		-- 	{
+		-- 		name = "Build and launch",
+		-- 		type = "lldb",
+		-- 		request = "launch",
+		-- 		program = "${fileDirname}/${fileBasenameNoExtension}",
+		-- 		cwd = "${fileDirname}",
+		-- 		stopOnEntry = false,
+		-- 		cmd = "!compcpp ${file}",
+		-- 		args = {},
+		-- 		runInTerminal = false,
+		-- 	},
+		-- 	{
+		-- 		name = "Launch",
+		-- 		type = "lldb",
+		-- 		request = "launch",
+		-- 		program = function()
+		-- 			return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+		-- 		end,
+		-- 		cwd = "${workspaceFolder}",
+		-- 		stopOnEntry = false,
+		-- 		args = {},
+		-- 	},
+		-- 	{
+		-- 		-- If you get an "Operation not permitted" error using this, try disabling YAMA:
+		-- 		--  echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+		-- 		name = "Attach to process",
+		-- 		type = "lldb", -- Adjust this to match your adapter name (`dap.adapters.<name>`)
+		-- 		request = "attach",
+		-- 		pid = require("dap.utils").pick_process,
+		-- 		args = {},
+		-- 	},
+		-- }
 	end,
 }
 
