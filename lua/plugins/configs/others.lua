@@ -64,7 +64,7 @@ M.signature = function()
 			floating_window = true,
 			fix_pos = true,
 			hint_enable = true,
-			hint_prefix = " ",
+			hint_prefix = "󰋼 ",
 			hint_scheme = "String",
 			hi_parameter = "Search",
 			max_height = 22,
@@ -85,9 +85,9 @@ M.lsp_handlers = function()
 		vim.fn.sign_define(hl, { text = icon, numhl = hl, texthl = hl })
 	end
 
-	lspSymbol("Error", "")
-	lspSymbol("Info", "")
-	lspSymbol("Hint", "")
+	lspSymbol("Error", "󰅙")
+	lspSymbol("Info", "󰋼")
+	lspSymbol("Hint", "󰌵")
 	lspSymbol("Warn", "")
 
 	vim.diagnostic.config({
@@ -126,7 +126,7 @@ M.gitsigns = function()
 			signs = {
 				add = { hl = "DiffAdd", text = "│", numhl = "GitSignsAddNr" },
 				change = { hl = "DiffChange", text = "│", numhl = "GitSignsChangeNr" },
-				delete = { hl = "DiffDelete", text = "", numhl = "GitSignsDeleteNr" },
+				delete = { hl = "DiffDelete", text = "󰍵", numhl = "GitSignsDeleteNr" },
 				topdelete = { hl = "DiffDelete", text = "‾", numhl = "GitSignsDeleteNr" },
 				changedelete = { hl = "DiffChangeDelete", text = "~", numhl = "GitSignsChangeNr" },
 			},

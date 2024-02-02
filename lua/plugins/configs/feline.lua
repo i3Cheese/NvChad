@@ -18,7 +18,7 @@ local icons = {
 local dir_name = {
 	provider = function()
 		local dir_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
-		return "  " .. dir_name .. " "
+		return " 󰉖 " .. dir_name .. " "
 	end,
 
 	hl = {
@@ -159,7 +159,7 @@ local diagnostic = {
 			return lsp.diagnostics_exist(lsp_severity.HINT)
 		end,
 		hl = { fg = colors.grey_fg2 },
-		icon = "  ",
+		icon = " 󰌶 ",
 		truncate_hide = true,
 		priority = 4,
 	},
@@ -170,7 +170,7 @@ local diagnostic = {
 			return lsp.diagnostics_exist(lsp_severity.INFO)
 		end,
 		hl = { fg = colors.green },
-		icon = "  ",
+		icon = " 󰋼 ",
 		truncate_hide = true,
 		priority = 4,
 	},
@@ -246,9 +246,9 @@ local current_line_persentage = {
 		local total_line = vim.fn.line("$")
 
 		if current_line == 1 then
-			return "  ﲓ  "
+			return "  󰞕  "
 		elseif current_line == vim.fn.line("$") then
-			return "  ﲐ  "
+			return "  󰞒  "
 		end
 		local result, _ = math.modf((current_line / total_line) * 100)
 		return " " .. result .. "%% "
@@ -337,9 +337,9 @@ local current_line_pos = {
 			local total_line = vim.fn.line("$")
 
 			if current_line == 1 then
-				return " ﲓ "
+				return " 󰞕 "
 			elseif current_line == vim.fn.line("$") then
-				return " ﲐ "
+				return " 󰞒 "
 			end
 			local result, _ = math.modf((current_line / total_line) * 100)
 			return result .. "%%"

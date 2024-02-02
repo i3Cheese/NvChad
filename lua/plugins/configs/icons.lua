@@ -35,17 +35,17 @@ default = {
 			name = "html",
 		},
 		jpeg = {
-			icon = "",
+			icon = "󰉏",
 			color = default.colors.dark_purple,
 			name = "jpeg",
 		},
 		jpg = {
-			icon = "",
+			icon = "󰉏",
 			color = default.colors.dark_purple,
 			name = "jpg",
 		},
 		js = {
-			icon = "",
+			icon = "󰌞",
 			color = default.colors.sun,
 			name = "js",
 		},
@@ -55,7 +55,7 @@ default = {
 			name = "kt",
 		},
 		lock = {
-			icon = "",
+			icon = "󰌾",
 			color = default.colors.red,
 			name = "lock",
 		},
@@ -65,7 +65,7 @@ default = {
 			name = "lua",
 		},
 		mp3 = {
-			icon = "",
+			icon = "󰎆",
 			color = default.colors.white,
 			name = "mp3",
 		},
@@ -80,7 +80,7 @@ default = {
 			name = "out",
 		},
 		png = {
-			icon = "",
+			icon = "󰉏",
 			color = default.colors.dark_purple,
 			name = "png",
 		},
@@ -90,7 +90,7 @@ default = {
 			name = "py",
 		},
 		["robots.txt"] = {
-			icon = "ﮧ",
+			icon = "󰚩",
 			color = default.colors.red,
 			name = "robots",
 		},
@@ -100,7 +100,7 @@ default = {
 			name = "toml",
 		},
 		ts = {
-			icon = "ﯤ",
+			icon = "󰛦",
 			color = default.colors.teal,
 			name = "ts",
 		},
@@ -120,7 +120,7 @@ default = {
 			name = "rpm",
 		},
 		vue = {
-			icon = "﵂",
+			icon = "󰡄",
 			color = default.colors.vibrant_green,
 			name = "vue",
 		},

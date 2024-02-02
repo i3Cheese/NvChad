@@ -520,6 +520,7 @@ local plugins = {
             require("plugins.configs.harpoon").setup()
         end,
     },
+    { 'kaarmu/typst.vim', ft = { 'typst' } },
 }
 
 --label plugins for operational assistance
