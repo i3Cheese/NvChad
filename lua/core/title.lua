@@ -16,7 +16,7 @@ end
 
 function M.titlestring()
     local blocks = {
-        " ",
+        " ",
         vim.fn.fnamemodify(vim.fn.getcwd(), ":t"),
         M.changed_string(),
     }
