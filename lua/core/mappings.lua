@@ -80,11 +80,6 @@ end
 
 -- below are all plugin related mappings
 
-M.bufferline = function()
-	map("n", "<Tab>", "<CMD>BufferLineCycleNext <CR>")
-	map("n", "<S-Tab>", "<CMD>BufferLineCyclePrev <CR>")
-end
-
 M.comment = function()
 	local m = "<leader>/"
 	map("n", m, "<Plug>(comment_toggle_linewise_current)")
@@ -260,26 +255,34 @@ M.treesitter = {
 }
 
 M.telescope = function()
-	map("n", "<leader>W", "<CMD>Telescope terms <CR>") -- pick a hidden term
 	map("n", "<leader>bb", "<CMD>Telescope buffers <CR>")
-	map("n", "<leader>ff", "<CMD>Telescope find_files <CR>")
-	map("n", "<leader>fa", "<CMD>Telescope find_files follow=true no_ignore=true hidden=true <CR>")
+	map(
+        "n", 
+        "<leader>ff", 
+        "<CMD>Telescope find_files <CR>"
+    )
+    map(
+        "n", 
+        "<leader>fgg", 
+		"<CMD>lua require'plugins.telescope'.project_files()<CR>"
+    )
+	map(
+        "n", 
+        "<leader>fa", 
+        "<CMD>Telescope find_files follow=true no_ignore=true hidden=true <CR>"
+    )
+	map(
+		"n",
+		"<Leader><Space>",
+        "<CMD>Telescope find_files <CR>",
+		{ noremap = true, silent = true }
+	)
 	map("n", "<leader>fgc", "<CMD>Telescope git_commits <CR>")
 	map("n", "<leader>fgd", "<CMD>Telescope git_status <CR>")
 	map("n", "<leader>lg", "<CMD>Telescope live_grep <CR>")
 	map("n", "<leader>fw", "<CMD>Telescope grep_string <CR>")
 	map("n", "<leader>fs", "<CMD>Telescope symbols <CR>")
 	vim.keymap.set({ "n", "i", "c", "v", "o" }, "<C-s>", "<CMD>Telescope symbols<CR>")
-	map(
-		"n",
-		"<Leader><Space>",
-		"<CMD>lua require'plugins.telescope'.project_files()<CR>",
-		{ noremap = true, silent = true }
-	)
-end
-
-M.symbols_outline = function()
-	map("n", "<Leader>m", "<CMD>SymbolsOutline<CR>", { silent = true })
 end
 
 M.dap = function()
@@ -310,6 +313,11 @@ end
 M.copilot = function ()
     vim.g.copilot_no_tab_map = true
     map("i", "<M-p>", 'copilot#Accept("\\<CR>")', {expr = true, silent = true})
+    -- accept one word
+    map("i", "<M-w>", '<Plug>(copilot-accept-word)', {silent = true})
+    -- accept one line
+    map("i", "<M-l>", '<Plug>(copilot-accept-line)', {silent = true})
+
 end
 
 M.harpoon = function ()
