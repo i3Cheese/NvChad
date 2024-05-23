@@ -23,6 +23,7 @@ end
 local function setup_html(opts)
     opts = vim.deepcopy(opts)
     opts.filetypes = { "html", "htmldjango" }
+    -- bun add -g vscode-langservers-extracted
     require("lspconfig").html.setup(opts)
 end
 

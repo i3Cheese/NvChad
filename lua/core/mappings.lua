@@ -44,6 +44,7 @@ M.misc = function()
 	map("n", "<leader>nn", "<CMD>set nu! <CR>")
 
 	map("v", "<C-c>", '"+y')
+	map("v", "<C-y>", '"+y')
 	map("n", "<C-c>", '"+yy') -- copy curent line in normal mode
 	map("v", "<leader>fc", '"hy:%s/<C-r>h//gc<left><left><left>')
 	map("v", "<leader>fr", '"hy:%s/<C-r>h//g<left><left><left>')
@@ -313,10 +314,12 @@ end
 M.copilot = function ()
     vim.g.copilot_no_tab_map = true
     map("i", "<M-p>", 'copilot#Accept("\\<CR>")', {expr = true, silent = true})
+    map("i", "<M-з>", 'copilot#Accept("\\<CR>")', {expr = true, silent = true})
     -- accept one word
     map("i", "<M-w>", '<Plug>(copilot-accept-word)', {silent = true})
+    map("i", "<M-ц>", '<Plug>(copilot-accept-word)', {silent = true})
     -- accept one line
-    map("i", "<M-l>", '<Plug>(copilot-accept-line)', {silent = true})
+    map("i", "<M-д>", '<Plug>(copilot-accept-line)', {silent = true})
 
 end
 

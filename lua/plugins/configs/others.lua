@@ -24,6 +24,7 @@ end
 
 M.blankline = function()
 	local conf = {
+        scope = { enabled = false },
 	}
 	require("ibl").setup(conf)
 end

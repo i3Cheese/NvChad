@@ -1,5 +1,13 @@
 local M = {}
 
+local disable_on_large_files = function(lang, buf)
+    local max_filesize = 100 * 1024 -- 100 KB
+    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+    if ok and stats and stats.size > max_filesize then
+        return true
+    end
+end
+
 M.setup = function()
 	local mapping = require("core.mappings").treesitter
 
@@ -17,13 +25,23 @@ M.setup = function()
 		highlight = {
 			enable = true,
 			use_languagetree = true,
+            disable = disable_on_large_files,
 		},
 		refactor = {
-			highlight_definitions = { enable = true },
+			highlight_definitions = { 
+                enable = true,
+                disable = function(lang, buf)
+                    local max_filesize = 100 * 1024 -- 100 KB
+                    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+                    if ok and stats and stats.size > max_filesize then
+                        return true
+                    end
+                end,
+            },
 		},
 
 		incremental_selection = mapping.incremental_selection,
-
+		--
 		context_commentstring = {
 			enable = true,
 
@@ -36,7 +54,7 @@ M.setup = function()
 				lua = "-- %s",
 			},
 		},
-
+		--
 		textobjects = mapping.textobjects,
         rainbow = {
             enable = true,

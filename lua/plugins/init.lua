@@ -52,18 +52,18 @@ local plugins = {
             require("plugins.configs.others").blankline()
         end,
     },
-    {
-        'rush-rs/tree-sitter-asm',
-        config = function()
-            require('nvim-treesitter.parsers').get_parser_configs().asm = {
-                install_info = {
-                    url = 'https://github.com/rush-rs/tree-sitter-asm.git',
-                    files = { 'src/parser.c' },
-                    branch = 'main',
-                },
-            }
-        end
-    },
+    -- {
+    --     'rush-rs/tree-sitter-asm',
+    --     config = function()
+    --         require('nvim-treesitter.parsers').get_parser_configs().asm = {
+    --             install_info = {
+    --                 url = 'https://github.com/rush-rs/tree-sitter-asm.git',
+    --                 files = { 'src/parser.c' },
+    --                 branch = 'main',
+    --             },
+    --         }
+    --     end
+    -- },
 
     {
         "nvim-treesitter/nvim-treesitter",
@@ -73,9 +73,9 @@ local plugins = {
         end,
         run = ":TSUpdate",
     },
-    { "nvim-treesitter/nvim-treesitter-textobjects" },
-    { "nvim-treesitter/nvim-treesitter-refactor" },
-    { "nvim-treesitter/nvim-treesitter-context" },
+    -- { "nvim-treesitter/nvim-treesitter-textobjects" },
+    -- { "nvim-treesitter/nvim-treesitter-refactor" },
+    -- { "nvim-treesitter/nvim-treesitter-context" },
 
     -- git stuff
     {
@@ -142,44 +142,44 @@ local plugins = {
             })
         end,
     },
-    {
-        "mfussenegger/nvim-dap",
-        config = function()
-            require("plugins.configs.dap").dap.setup()
-            require("core.mappings").dap()
-        end,
-    },
-    {
-        "theHamsta/nvim-dap-virtual-text",
-        config = function()
-            require("nvim-dap-virtual-text").setup({})
-        end,
-        after = "nvim-dap",
-    },
-    {
-        "rcarriga/nvim-dap-ui",
-        requires = { "mfussenegger/nvim-dap" },
-        after = "nvim-dap",
-        config = function()
-            require("plugins.configs.dap").dapui.setup()
-        end,
-    },
-    {
-        "ldelossa/nvim-dap-projects",
-        config = function()
-            require('nvim-dap-projects').search_project_config()
-        end
-    },
-    {
-        "nvim-telescope/telescope-dap.nvim",
-        requires = { "nvim-dap", "telescope.nvim" },
-        after = "nvim-dap",
-        config = function()
-            require("telescope").load_extension("dap")
-            vim.cmd("silent! command Vars lua require'telescope'.extensions.dap.variables{}")
-            vim.cmd("silent! command Breakpoints lua require'telescope'.extensions.dap.list_breakpoints{}")
-        end,
-    },
+    -- {
+    --     "mfussenegger/nvim-dap",
+    --     config = function()
+    --         require("plugins.configs.dap").dap.setup()
+    --         require("core.mappings").dap()
+    --     end,
+    -- },
+    -- {
+    --     "theHamsta/nvim-dap-virtual-text",
+    --     config = function()
+    --         require("nvim-dap-virtual-text").setup({})
+    --     end,
+    --     after = "nvim-dap",
+    -- },
+    -- {
+    --     "rcarriga/nvim-dap-ui",
+    --     requires = { "mfussenegger/nvim-dap" },
+    --     after = "nvim-dap",
+    --     config = function()
+    --         require("plugins.configs.dap").dapui.setup()
+    --     end,
+    -- },
+    -- {
+    --     "ldelossa/nvim-dap-projects",
+    --     config = function()
+    --         require('nvim-dap-projects').search_project_config()
+    --     end
+    -- },
+    -- {
+    --     "nvim-telescope/telescope-dap.nvim",
+    --     requires = { "nvim-dap", "telescope.nvim" },
+    --     after = "nvim-dap",
+    --     config = function()
+    --         require("telescope").load_extension("dap")
+    --         vim.cmd("silent! command Vars lua require'telescope'.extensions.dap.variables{}")
+    --         vim.cmd("silent! command Breakpoints lua require'telescope'.extensions.dap.list_breakpoints{}")
+    --     end,
+    -- },
     {
         "simrat39/rust-tools.nvim",
         config = function()
@@ -216,27 +216,27 @@ local plugins = {
     --         })
     --     end,
     -- },
-
-    {
-        "danymat/neogen",
-        config = function()
-            require("neogen").setup({
-                snippet_engine = "snippy",
-            })
-        end,
-        cmd = { "Neogen" },
-        requires = "nvim-treesitter/nvim-treesitter",
-        tag = "*",
-        event = "InsertEnter",
-    },
-
-    {
-        "simrat39/symbols-outline.nvim",
-        cmd = { "SymbolsOutline", "SymbolsOutlineOpen" },
-        config = function()
-            require("core.mappings").symbols_outline()
-        end,
-    },
+    --
+    -- {
+    --     "danymat/neogen",
+    --     config = function()
+    --         require("neogen").setup({
+    --             snippet_engine = "snippy",
+    --         })
+    --     end,
+    --     cmd = { "Neogen" },
+    --     requires = "nvim-treesitter/nvim-treesitter",
+    --     tag = "*",
+    --     event = "InsertEnter",
+    -- },
+    --
+    -- {
+    --     "simrat39/symbols-outline.nvim",
+    --     cmd = { "SymbolsOutline", "SymbolsOutlineOpen" },
+    --     config = function()
+    --         require("core.mappings").symbols_outline()
+    --     end,
+    -- },
     {
         "hrsh7th/nvim-cmp",
         config = function()
@@ -356,53 +356,53 @@ local plugins = {
             require("plugins.configs.others").better_escape()
         end,
     },
-    {
-        "windwp/nvim-ts-autotag",
-        after = "nvim-treesitter",
-        config = function()
-            require("nvim-ts-autotag").setup({
-                filetypes = {
-                    "html",
-                    "javascript",
-                    "typescript",
-                    "javascriptreact",
-                    "typescriptreact",
-                    "svelte",
-                    "vue",
-                    "tsx",
-                    "jsx",
-                    "rescript",
-                    "xml",
-                    "php",
-                    "markdown",
-                    "glimmer",
-                    "handlebars",
-                    "hbs",
-                    "htmldjango",
-                },
-                skip_tags = {
-                    "area",
-                    "base",
-                    "br",
-                    "col",
-                    "command",
-                    "embed",
-                    "hr",
-                    "img",
-                    "slot",
-                    "input",
-                    "keygen",
-                    "link",
-                    "meta",
-                    "param",
-                    "source",
-                    "track",
-                    "wbr",
-                    "menuitem",
-                },
-            })
-        end,
-    },
+    -- {
+    --     "windwp/nvim-ts-autotag",
+    --     after = "nvim-treesitter",
+    --     config = function()
+    --         require("nvim-ts-autotag").setup({
+    --             filetypes = {
+    --                 "html",
+    --                 "javascript",
+    --                 "typescript",
+    --                 "javascriptreact",
+    --                 "typescriptreact",
+    --                 "svelte",
+    --                 "vue",
+    --                 "tsx",
+    --                 "jsx",
+    --                 "rescript",
+    --                 "xml",
+    --                 "php",
+    --                 "markdown",
+    --                 "glimmer",
+    --                 "handlebars",
+    --                 "hbs",
+    --                 "htmldjango",
+    --             },
+    --             skip_tags = {
+    --                 "area",
+    --                 "base",
+    --                 "br",
+    --                 "col",
+    --                 "command",
+    --                 "embed",
+    --                 "hr",
+    --                 "img",
+    --                 "slot",
+    --                 "input",
+    --                 "keygen",
+    --                 "link",
+    --                 "meta",
+    --                 "param",
+    --                 "source",
+    --                 "track",
+    --                 "wbr",
+    --                 "menuitem",
+    --             },
+    --         })
+    --     end,
+    -- },
     { -- configuring tabs
         "gpanders/editorconfig.nvim",
     },
@@ -451,16 +451,16 @@ local plugins = {
             })
         end,
     },
-    {
-        "glacambre/firenvim",
-        run = function()
-            vim.fn.eval("firenvim#install(0)")
-        end,
-        cond = cond_f("firenvim"),
-        config = function()
-            require("plugins.configs.firenvim").setup()
-        end,
-    },
+    -- {
+    --     "glacambre/firenvim",
+    --     run = function()
+    --         vim.fn.eval("firenvim#install(0)")
+    --     end,
+    --     cond = cond_f("firenvim"),
+    --     config = function()
+    --         require("plugins.configs.firenvim").setup()
+    --     end,
+    -- },
     {
         "tpope/vim-fugitive",
     },
@@ -478,29 +478,29 @@ local plugins = {
     {
         "eandrju/cellular-automaton.nvim"
     },
-    {
-        "dbakker/vim-projectroot",
-        config = function()
-            vim.g.rootmarkers = { ".git" }
-            vim.api.nvim_create_autocmd("BufEnter", {
-                pattern = "*",
-                callback = function()
-                    if vim.fn.argc() > 0 then
-                        pcall(vim.cmd, ":ProjectRootCD")
-                    end
-                end,
-            })
-            -- vim.cmd(":ProjectRootCD")
-        end,
-    },
-    {
-        "MrcJkb/haskell-tools.nvim",
-        requires = {
-            'nvim-lua/plenary.nvim',
-            'nvim-telescope/telescope.nvim',
-        },
-        branch = '1.x.x',
-    },
+    -- {
+    --     "dbakker/vim-projectroot",
+    --     config = function()
+    --         vim.g.rootmarkers = { ".git" }
+    --         vim.api.nvim_create_autocmd("BufEnter", {
+    --             pattern = "*",
+    --             callback = function()
+    --                 if vim.fn.argc() > 0 then
+    --                     pcall(vim.cmd, ":ProjectRootCD")
+    --                 end
+    --             end,
+    --         })
+    --         -- vim.cmd(":ProjectRootCD")
+    --     end,
+    -- },
+    -- {
+    --     "MrcJkb/haskell-tools.nvim",
+    --     requires = {
+    --         'nvim-lua/plenary.nvim',
+    --         'nvim-telescope/telescope.nvim',
+    --     },
+    --     branch = '1.x.x',
+    -- },
     {
         "brenoprata10/nvim-highlight-colors",
         config = function()
@@ -511,11 +511,11 @@ local plugins = {
         end,
     },
     {
+        "ThePrimeagen/harpoon",
         requires = {
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope.nvim",
         },
-        "ThePrimeagen/harpoon",
         config = function()
             require("plugins.configs.harpoon").setup()
         end,
