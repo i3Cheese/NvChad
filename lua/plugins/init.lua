@@ -124,22 +124,7 @@ local plugins = {
     {
         "jose-elias-alvarez/null-ls.nvim",
         config = function()
-            local null_ls = require("null-ls")
-            null_ls.setup({
-                debug = true,
-                sources = {
-                    null_ls.builtins.formatting.autopep8.with({
-                        extra_args = { "--ignore=E402" },
-                    }),
-                    null_ls.builtins.formatting.brittany,
-                    -- null_ls.builtins.code_actions.gitsigns,
-                    null_ls.builtins.formatting.prettier,
-                    null_ls.builtins.formatting.djhtml,
-                    null_ls.builtins.formatting.gofmt,
-                    null_ls.builtins.formatting.rustfmt,
-                    null_ls.builtins.hover.dictionary,
-                },
-            })
+            require("plugins.configs.lspconfig").setup_null_ls()
         end,
     },
     -- {
@@ -281,6 +266,28 @@ local plugins = {
         end,
     },
     {
+        "windwp/nvim-ts-autotag",
+        after = "nvim-treesitter",
+        config = function()
+            require('nvim-ts-autotag').setup({
+                opts = {
+                    -- Defaults
+                    enable_close = true,          -- Auto close tags
+                    enable_rename = true,         -- Auto rename pairs of tags
+                    enable_close_on_slash = false -- Auto close on trailing </
+                },
+                -- Also override individual filetype configs, these take priority.
+                -- Empty by default, useful if one of the "opts" global settings
+                -- doesn't work well in a specific filetype
+                per_filetype = {
+                    -- ["html"] = {
+                    --     enable_close = false
+                    -- }
+                }
+            })
+        end
+    },
+    {
         "goolord/alpha-nvim",
         config = function()
             require("plugins.configs.alpha").setup()
@@ -324,6 +331,7 @@ local plugins = {
     },
     {
         "Shatur/neovim-session-manager",
+        commit = "a0b9d25154be573bc0f99877afb3f57cf881cce7",
         config = function()
             require("session_manager").setup({
                 path_replacer = "__",                                                    -- The character to which the path separator will be replaced for session files.
@@ -333,6 +341,7 @@ local plugins = {
                 autosave_ignore_not_normal = true,                                       -- Plugin will not save a session when no buffers are opened, or all of them aren't writable or listed.
                 autosave_ignore_filetypes = {                                            -- All buffers of these file types will be closed before the session is saved.
                     "gitcommit",
+                    "gitrebase",
                     "alpha",
                 },
                 autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
@@ -356,53 +365,6 @@ local plugins = {
             require("plugins.configs.others").better_escape()
         end,
     },
-    -- {
-    --     "windwp/nvim-ts-autotag",
-    --     after = "nvim-treesitter",
-    --     config = function()
-    --         require("nvim-ts-autotag").setup({
-    --             filetypes = {
-    --                 "html",
-    --                 "javascript",
-    --                 "typescript",
-    --                 "javascriptreact",
-    --                 "typescriptreact",
-    --                 "svelte",
-    --                 "vue",
-    --                 "tsx",
-    --                 "jsx",
-    --                 "rescript",
-    --                 "xml",
-    --                 "php",
-    --                 "markdown",
-    --                 "glimmer",
-    --                 "handlebars",
-    --                 "hbs",
-    --                 "htmldjango",
-    --             },
-    --             skip_tags = {
-    --                 "area",
-    --                 "base",
-    --                 "br",
-    --                 "col",
-    --                 "command",
-    --                 "embed",
-    --                 "hr",
-    --                 "img",
-    --                 "slot",
-    --                 "input",
-    --                 "keygen",
-    --                 "link",
-    --                 "meta",
-    --                 "param",
-    --                 "source",
-    --                 "track",
-    --                 "wbr",
-    --                 "menuitem",
-    --             },
-    --         })
-    --     end,
-    -- },
     { -- configuring tabs
         "gpanders/editorconfig.nvim",
     },
