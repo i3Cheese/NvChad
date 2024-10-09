@@ -29,7 +29,7 @@ end
 
 local function setup_js(opts)
     opts = vim.deepcopy(opts)
-    require("lspconfig").tsserver.setup(opts)
+    require("lspconfig").ts_ls.setup(opts)
 end
 
 local function setup_rust_analyser(opts)
@@ -51,6 +51,11 @@ local function setup_latex(opts)
         }
     }
     require("lspconfig").texlab.setup(opts)
+end
+
+local function setup_go(opts)
+    opts = vim.deepcopy(opts)
+    require("lspconfig").gopls.setup(opts)
 end
 
 local function setup_lua(opts)
@@ -125,6 +130,7 @@ local function setup_servers()
     setup_latex(opts)
     setup_js(opts)
     setup_rust_analyser(opts)
+    setup_go(opts)
 end
 
 M.setup = function()

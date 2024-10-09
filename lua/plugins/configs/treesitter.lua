@@ -12,16 +12,16 @@ M.setup = function()
 	local mapping = require("core.mappings").treesitter
 
 	require("nvim-treesitter.configs").setup({
-		ensure_installed = {
-			"lua",
-			"vim",
-			"python",
-			"cpp",
-			"yaml",
-			"json",
-			"html",
-			"javascript",
-		},
+		-- ensure_installed = {
+		-- 	"lua",
+		-- 	"vim",
+		-- 	"python",
+		-- 	"cpp",
+		-- 	"yaml",
+		-- 	"json",
+		-- 	"html",
+		-- 	"javascript",
+		-- },
 		highlight = {
 			enable = true,
 			use_languagetree = true,
@@ -97,8 +97,6 @@ M.setup = function()
 		},
 		zindex = 20, -- The Z-index of the context window
 	})
-
-    vim.treesitter.language.register('typescriptreact', "typescript");
 end
 
 return M

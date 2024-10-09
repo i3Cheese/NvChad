@@ -64,10 +64,13 @@ M.signature = function()
 			doc_lines = 0,
 			floating_window = true,
 			fix_pos = true,
-			hint_enable = true,
+			hint_enable = false,
+            toggle_key = "<M-s>",
+            toggle_key_flip_floatwin_setting = "<M-d>",
 			hint_prefix = "󰋼 ",
 			hint_scheme = "String",
 			hi_parameter = "Search",
+            timer_interval = 1000000000000,
 			max_height = 22,
 			max_width = 120, -- max_width of signature floating_window, line will be wrapped if exceed max_width
 			handler_opts = {
@@ -122,16 +125,31 @@ end
 
 M.gitsigns = function()
 	local present, gitsigns = pcall(require, "gitsigns")
+
 	if present then
 		local default = {
 			signs = {
-				add = { hl = "DiffAdd", text = "│", numhl = "GitSignsAddNr" },
-				change = { hl = "DiffChange", text = "│", numhl = "GitSignsChangeNr" },
-				delete = { hl = "DiffDelete", text = "󰍵", numhl = "GitSignsDeleteNr" },
-				topdelete = { hl = "DiffDelete", text = "‾", numhl = "GitSignsDeleteNr" },
-				changedelete = { hl = "DiffChangeDelete", text = "~", numhl = "GitSignsChangeNr" },
+				add = { text = "│", },
+				change = { text = "│", },
+				delete = { text = "󰍵", },
+				topdelete = { text = "‾", },
+				changedelete = { text = "~", },
 			},
 		}
+        vim.api.nvim_set_hl(0, "GitSignsAdd", { link = "DiffAdd" })
+        vim.api.nvim_set_hl(0, "GitSignsAddNr", { link = "GitSignsAddNr" })
+        vim.api.nvim_set_hl(0, "GitSignsChange", { link = "DiffChange" })
+        vim.api.nvim_set_hl(0, "GitSignsChangeNr", { link = "GitSignsChangeNr" })
+        vim.api.nvim_set_hl(0, "GitSignsChangedelete", { link = "DiffChangeDelete" })
+        vim.api.nvim_set_hl(0, "GitSignsChangedeleteNr", { link = "GitSignsChangeNr" })
+        vim.api.nvim_set_hl(0, "GitSignsDelete", { link = "DiffDelete" })
+        vim.api.nvim_set_hl(0, "GitSignsDeleteNr", { link = "GitSignsDeleteNr" })
+        vim.api.nvim_set_hl(0, "GitSignsTopdelete", { link = "DiffDelete" })
+        vim.api.nvim_set_hl(0, "GitSignsTopdeleteNr", { link = "GitSignsDeleteNr" })
+
+
+
+
 		gitsigns.setup(default)
 	end
 end

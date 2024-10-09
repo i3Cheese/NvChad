@@ -12,9 +12,17 @@ local function disable_f(plugin_name)
     end
 end
 
+local function no_vscode()
+    return not vim.g.vscode
+end
+
 local plugins = {
-    { "nvim-lua/plenary.nvim" },
-    { "lewis6991/impatient.nvim" },
+    {
+        "nvim-lua/plenary.nvim"
+    },
+    {
+        "lewis6991/impatient.nvim"
+    },
     -- { "nathom/filetype.nvim" },
 
     {
@@ -33,6 +41,7 @@ local plugins = {
     {
         "feline-nvim/feline.nvim",
         after = "nvim-web-devicons",
+        cond = no_vscode,
         config = function()
             require("plugins.configs.feline").setup()
         end,
@@ -40,6 +49,7 @@ local plugins = {
     {
         "j-hui/fidget.nvim",
         after = "nvim-lspconfig",
+        cond = no_vscode,
         config = function()
             require("fidget").setup({})
         end,
@@ -48,6 +58,7 @@ local plugins = {
     {
         "lukas-reineke/indent-blankline.nvim",
         event = "BufRead",
+        cond = no_vscode,
         config = function()
             require("plugins.configs.others").blankline()
         end,
@@ -67,19 +78,33 @@ local plugins = {
 
     {
         "nvim-treesitter/nvim-treesitter",
+        cond = no_vscode,
         config = function()
             require("plugins.configs.treesitter").setup()
         end,
         run = ":TSUpdate",
     },
-    -- { "nvim-treesitter/nvim-treesitter-textobjects" },
-    -- { "nvim-treesitter/nvim-treesitter-refactor" },
-    -- { "nvim-treesitter/nvim-treesitter-context" },
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        cond = no_vscode,
+        after = "nvim-treesitter",
+    },
+    {
+        "nvim-treesitter/nvim-treesitter-refactor",
+        cond = no_vscode,
+        after = "nvim-treesitter",
+    },
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        cond = no_vscode,
+        after = "nvim-treesitter",
+    },
 
     -- git stuff
     {
         "lewis6991/gitsigns.nvim",
         opt = true,
+        cond = no_vscode,
         config = function()
             require("plugins.configs.others").gitsigns()
         end,
@@ -94,6 +119,7 @@ local plugins = {
         "neovim/nvim-lspconfig",
         module = "lspconfig",
         opt = true,
+         -- cond = no_vscode,
         setup = function()
             require("core.utils").packer_lazy_load("nvim-lspconfig")
             -- reload the current file so lsp actually starts for it
@@ -107,6 +133,7 @@ local plugins = {
     },
     {
         "github/copilot.vim",
+         -- cond = no_vscode,
         setup = function()
             require("core.mappings").copilot()
         end
@@ -122,6 +149,7 @@ local plugins = {
 
     {
         "jose-elias-alvarez/null-ls.nvim",
+         -- cond = no_vscode,
         config = function()
             require("plugins.configs.lspconfig").setup_null_ls()
         end,
@@ -166,6 +194,7 @@ local plugins = {
     -- },
     {
         "simrat39/rust-tools.nvim",
+         -- cond = no_vscode,
         config = function()
             local rt = require("rust-tools")
             rt.setup({
@@ -174,6 +203,7 @@ local plugins = {
     },
     {
         'saecki/crates.nvim',
+         -- cond = no_vscode,
         tag = 'stable',
         requires = { 'nvim-lua/plenary.nvim' },
         config = function()
@@ -201,18 +231,19 @@ local plugins = {
     --     end,
     -- },
     --
-    -- {
-    --     "danymat/neogen",
-    --     config = function()
-    --         require("neogen").setup({
-    --             snippet_engine = "snippy",
-    --         })
-    --     end,
-    --     cmd = { "Neogen" },
-    --     requires = "nvim-treesitter/nvim-treesitter",
-    --     tag = "*",
-    --     event = "InsertEnter",
-    -- },
+    {
+        "danymat/neogen",
+         -- cond = no_vscode,
+        config = function()
+            require("neogen").setup({
+                snippet_engine = "snippy",
+            })
+        end,
+        cmd = { "Neogen" },
+        requires = "nvim-treesitter/nvim-treesitter",
+        tag = "*",
+        event = "InsertEnter",
+    },
     --
     -- {
     --     "simrat39/symbols-outline.nvim",
@@ -223,57 +254,66 @@ local plugins = {
     -- },
     {
         "hrsh7th/nvim-cmp",
+         -- cond = no_vscode,
         config = function()
             require("plugins.configs.cmp").setup()
         end,
     },
     {
         "dcampos/nvim-snippy",
+         -- cond = no_vscode,
     },
     {
         "dcampos/cmp-snippy",
+         -- cond = no_vscode,
         requires = { "nvim-snippy", "nvim-cmp" },
     },
     {
         "honza/vim-snippets",
+         -- cond = no_vscode,
     },
     {
         "hrsh7th/cmp-nvim-lua",
+         -- cond = no_vscode,
     },
 
     {
         "hrsh7th/cmp-nvim-lsp",
         after = "cmp-nvim-lua",
+         -- cond = no_vscode,
     },
 
     {
         "hrsh7th/cmp-buffer",
         after = "cmp-nvim-lsp",
+         -- cond = no_vscode,
     },
 
     {
         "hrsh7th/cmp-path",
         after = "cmp-buffer",
+         -- cond = no_vscode,
     },
 
     -- misc plugins
-    {
-        "windwp/nvim-autopairs",
-        after = "nvim-cmp",
-        config = function()
-            require("plugins.configs.others").autopairs()
-        end,
-    },
+    -- {
+    --     "windwp/nvim-autopairs",
+    --     after = "nvim-cmp",
+    --     config = function()
+    --         require("plugins.configs.others").autopairs()
+    --     end,
+    -- },
     {
         "windwp/nvim-ts-autotag",
         after = "nvim-treesitter",
+         -- cond = no_vscode,
         config = function()
             require('nvim-ts-autotag').setup({
                 opts = {
                     -- Defaults
-                    enable_close = true,          -- Auto close tags
-                    enable_rename = true,         -- Auto rename pairs of tags
-                    enable_close_on_slash = false -- Auto close on trailing </
+                    enable_close = true,         -- Auto close tags
+                    enable_rename = true,        -- Auto rename pairs of tags
+                    enable_close_on_slash = true -- Auto close on trailing </
                 },
                 -- Also override individual filetype configs, these take priority.
                 -- Empty by default, useful if one of the "opts" global settings
@@ -288,6 +328,7 @@ local plugins = {
     },
     {
         "goolord/alpha-nvim",
+         -- cond = no_vscode,
         config = function()
             require("plugins.configs.alpha").setup()
         end,
@@ -302,6 +343,7 @@ local plugins = {
     -- file managing , picker etc
     {
         "luukvbaal/nnn.nvim",
+         -- cond = no_vscode,
         config = function()
             require("plugins.configs.nnn").setup()
         end,
@@ -326,11 +368,16 @@ local plugins = {
     },
     {
         "ellisonleao/glow.nvim",
+         -- cond = no_vscode,
         cmd = "Glow",
+        config = function()
+            require("glow").setup()
+        end,
     },
     {
         "Shatur/neovim-session-manager",
         commit = "a0b9d25154be573bc0f99877afb3f57cf881cce7",
+         -- cond = no_vscode,
         config = function()
             require("session_manager").setup({
                 path_replacer = "__",                                                    -- The character to which the path separator will be replaced for session files.
@@ -349,16 +396,17 @@ local plugins = {
         end,
     },
 
-    {
-        "andymass/vim-matchup",
-        opt = true,
-        setup = function()
-            require("core.utils").packer_lazy_load("vim-matchup")
-        end,
-    },
+    -- {
+    --     "andymass/vim-matchup",
+    --     opt = true,
+    --     setup = function()
+    --         require("core.utils").packer_lazy_load("vim-matchup")
+    --     end,
+    -- },
 
     {
         "max397574/better-escape.nvim",
+         -- cond = no_vscode,
         event = "InsertCharPre",
         config = function()
             require("plugins.configs.others").better_escape()
@@ -366,9 +414,11 @@ local plugins = {
     },
     { -- configuring tabs
         "gpanders/editorconfig.nvim",
+         -- cond = no_vscode,
     },
     {
         "AckslD/nvim-gfold.lua",
+         -- cond = no_vscode,
         config = function()
             require("gfold").setup({
                 cwd = vim.fn.getenv("HOME") .. "/projects",
@@ -409,6 +459,10 @@ local plugins = {
                 input = {
                     border = "rounded",
                 },
+                select = {
+                    border = "rounded",
+
+                },
             })
         end,
     },
@@ -417,13 +471,14 @@ local plugins = {
     --     run = function()
     --         vim.fn.eval("firenvim#install(0)")
     --     end,
-    --     cond = cond_f("firenvim"),
+    --      -- cond = cond_f("firenvim"),
     --     config = function()
     --         require("plugins.configs.firenvim").setup()
     --     end,
     -- },
     {
         "tpope/vim-fugitive",
+         -- cond = no_vscode,
     },
     {
         "tpope/vim-git",
@@ -437,7 +492,8 @@ local plugins = {
         end,
     },
     {
-        "eandrju/cellular-automaton.nvim"
+        "eandrju/cellular-automaton.nvim",
+         -- cond = no_vscode,
     },
     -- {
     --     "dbakker/vim-projectroot",
