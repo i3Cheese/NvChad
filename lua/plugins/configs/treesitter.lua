@@ -10,8 +10,7 @@ end
 
 M.setup = function()
 	local mapping = require("core.mappings").treesitter
-
-	require("nvim-treesitter.configs").setup({
+	require("nvim-treesitter").setup({
 		-- ensure_installed = {
 		-- 	"lua",
 		-- 	"vim",
@@ -26,18 +25,6 @@ M.setup = function()
 			enable = true,
 			use_languagetree = true,
             disable = disable_on_large_files,
-		},
-		refactor = {
-			highlight_definitions = { 
-                enable = true,
-                disable = function(lang, buf)
-                    local max_filesize = 100 * 1024 -- 100 KB
-                    local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-                    if ok and stats and stats.size > max_filesize then
-                        return true
-                    end
-                end,
-            },
 		},
 
 		incremental_selection = mapping.incremental_selection,
@@ -65,38 +52,16 @@ M.setup = function()
             -- termcolors = {} -- table of colour name strings
           },
 	})
-	require("treesitter-context").setup({
-		enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-		max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
-		patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
-			-- For all filetypes
-			-- Note that setting an entry here replaces all other patterns for this entry.
-			-- By setting the 'default' entry below, you can control which nodes you want to
-			-- appear in the context window.
-			default = {
-				"class",
-				"function",
-				"method",
-				'for', -- These won't appear in the context
-				'while',
-				-- 'if',
-				-- 'switch',
-				-- 'case',
-			},
-			-- Example for a specific filetype.
-			-- If a pattern is missing, *open a PR* so everyone can benefit.
-			--   rust = {
-			--       'impl_item',
-			--   },
-		},
-		exact_patterns = {
-			-- Example for a specific filetype with Lua patterns
-			-- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
-			-- exactly match "impl_item" only)
-			-- rust = true,
-		},
-		zindex = 20, -- The Z-index of the context window
-	})
+    require'nvim-treesitter'.install {
+        "lua",
+        "vim",
+        "python",
+        "cpp",
+        "yaml",
+        "json",
+        "html",
+        "javascript",
+    };
 end
 
 return M

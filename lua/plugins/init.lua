@@ -79,39 +79,40 @@ local plugins = {
     {
         "nvim-treesitter/nvim-treesitter",
         cond = no_vscode,
+        branch = 'main',
         config = function()
             require("plugins.configs.treesitter").setup()
         end,
         run = ":TSUpdate",
     },
-    {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        cond = no_vscode,
-        after = "nvim-treesitter",
-    },
-    {
-        "nvim-treesitter/nvim-treesitter-refactor",
-        cond = no_vscode,
-        after = "nvim-treesitter",
-    },
-    {
-        "nvim-treesitter/nvim-treesitter-context",
-        cond = no_vscode,
-        after = "nvim-treesitter",
-    },
+    -- {
+    --     "nvim-treesitter/nvim-treesitter-textobjects",
+    --     cond = no_vscode,
+    --     after = "nvim-treesitter",
+    -- },
+    -- {
+    --     "nvim-treesitter/nvim-treesitter-refactor",
+    --     cond = no_vscode,
+    --     after = "nvim-treesitter",
+    -- },
+    -- {
+    --     "nvim-treesitter/nvim-treesitter-context",
+    --     cond = no_vscode,
+    --     after = "nvim-treesitter",
+    -- },
 
     -- git stuff
-    {
-        "lewis6991/gitsigns.nvim",
-        opt = true,
-        cond = no_vscode,
-        config = function()
-            require("plugins.configs.others").gitsigns()
-        end,
-        setup = function()
-            require("core.utils").packer_lazy_load("gitsigns.nvim")
-        end,
-    },
+    -- {
+    --     "lewis6991/gitsigns.nvim",
+    --     opt = true,
+    --     cond = no_vscode,
+    --     config = function()
+    --         require("plugins.configs.others").gitsigns()
+    --     end,
+    --     setup = function()
+    --         require("core.utils").packer_lazy_load("gitsigns.nvim")
+    --     end,
+    -- },
 
     -- lsp stuff
 
@@ -124,20 +125,20 @@ local plugins = {
             require("core.utils").packer_lazy_load("nvim-lspconfig")
             -- reload the current file so lsp actually starts for it
             vim.defer_fn(function()
-                vim.cmd('if &ft == "packer" | echo "" | else | silent! e %')
+                vim.cmd('if &ft == "packer" | echo "" | else | silent! e % | endif')
             end, 0)
         end,
         config = function()
             require("plugins.configs.lspconfig").setup()
         end,
     },
-    {
-        "github/copilot.vim",
-         -- cond = no_vscode,
-        setup = function()
-            require("core.mappings").copilot()
-        end
-    },
+    -- {
+    --     "github/copilot.vim",
+    --      -- cond = no_vscode,
+    --     setup = function()
+    --         require("core.mappings").copilot()
+    --     end
+    -- },
 
     -- {
     -- 	"ray-x/lsp_signature.nvim",
@@ -192,24 +193,24 @@ local plugins = {
     --         vim.cmd("silent! command Breakpoints lua require'telescope'.extensions.dap.list_breakpoints{}")
     --     end,
     -- },
-    {
-        "simrat39/rust-tools.nvim",
-         -- cond = no_vscode,
-        config = function()
-            local rt = require("rust-tools")
-            rt.setup({
-            })
-        end
-    },
-    {
-        'saecki/crates.nvim',
-         -- cond = no_vscode,
-        tag = 'stable',
-        requires = { 'nvim-lua/plenary.nvim' },
-        config = function()
-            require('crates').setup()
-        end,
-    },
+    -- {
+    --     "simrat39/rust-tools.nvim",
+    --      -- cond = no_vscode,
+    --     config = function()
+    --         local rt = require("rust-tools")
+    --         rt.setup({
+    --         })
+    --     end
+    -- },
+    -- {
+    --     'saecki/crates.nvim',
+    --      -- cond = no_vscode,
+    --     tag = 'stable',
+    --     requires = { 'nvim-lua/plenary.nvim' },
+    --     config = function()
+    --         require('crates').setup()
+    --     end,
+    -- },
     -- {
     --     "mfussenegger/nvim-dap-python",
     --     requires = { "nvim-dap" },
@@ -228,28 +229,6 @@ local plugins = {
     --             program = "${file}", -- This configuration will launch the current file if used.
     --             pythonPath = require("core.utils").locate_python_executable(),
     --         })
-    --     end,
-    -- },
-    --
-    {
-        "danymat/neogen",
-         -- cond = no_vscode,
-        config = function()
-            require("neogen").setup({
-                snippet_engine = "snippy",
-            })
-        end,
-        cmd = { "Neogen" },
-        requires = "nvim-treesitter/nvim-treesitter",
-        tag = "*",
-        event = "InsertEnter",
-    },
-    --
-    -- {
-    --     "simrat39/symbols-outline.nvim",
-    --     cmd = { "SymbolsOutline", "SymbolsOutlineOpen" },
-    --     config = function()
-    --         require("core.mappings").symbols_outline()
     --     end,
     -- },
     {
@@ -303,29 +282,29 @@ local plugins = {
     --         require("plugins.configs.others").autopairs()
     --     end,
     -- },
-    {
-        "windwp/nvim-ts-autotag",
-        after = "nvim-treesitter",
-         -- cond = no_vscode,
-        config = function()
-            require('nvim-ts-autotag').setup({
-                opts = {
-                    -- Defaults
-                    enable_close = true,         -- Auto close tags
-                    enable_rename = true,        -- Auto rename pairs of tags
-                    enable_close_on_slash = true -- Auto close on trailing </
-                },
-                -- Also override individual filetype configs, these take priority.
-                -- Empty by default, useful if one of the "opts" global settings
-                -- doesn't work well in a specific filetype
-                per_filetype = {
-                    -- ["html"] = {
-                    --     enable_close = false
-                    -- }
-                }
-            })
-        end
-    },
+    -- {
+    --     "windwp/nvim-ts-autotag",
+    --     after = "nvim-treesitter",
+    --      -- cond = no_vscode,
+    --     config = function()
+    --         require('nvim-ts-autotag').setup({
+    --             opts = {
+    --                 -- Defaults
+    --                 enable_close = true,         -- Auto close tags
+    --                 enable_rename = true,        -- Auto rename pairs of tags
+    --                 enable_close_on_slash = true -- Auto close on trailing </
+    --             },
+    --             -- Also override individual filetype configs, these take priority.
+    --             -- Empty by default, useful if one of the "opts" global settings
+    --             -- doesn't work well in a specific filetype
+    --             per_filetype = {
+    --                 -- ["html"] = {
+    --                 --     enable_close = false
+    --                 -- }
+    --             }
+    --         })
+    --     end
+    -- },
     {
         "goolord/alpha-nvim",
          -- cond = no_vscode,
