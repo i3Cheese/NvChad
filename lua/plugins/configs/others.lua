@@ -17,8 +17,15 @@ end
 
 M.better_escape = function()
 	require("better_escape").setup({
-		mapping = "jk",
 		timeout = config.plugins.options.esc_insertmode_timeout,
+		default_mappings = false,
+		mappings = {
+			i = {
+				j = {
+					k = "<Esc>",
+				},
+			},
+		},
 	})
 end
 
@@ -103,12 +110,8 @@ M.lsp_handlers = function()
 		update_in_insert = false,
 	})
 
-	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-		border = "single",
-	})
-	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-		border = "single",
-	})
+	-- default border for all floating windows (hover, signature help, etc.)
+	vim.o.winborder = "single"
 
 	-- -- suppress error messages from lang servers
 	-- vim.notify = function(msg, log_level)

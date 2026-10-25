@@ -99,8 +99,8 @@ M.lspconfig = function()
     map("n", "<leader>r", "<CMD>lua vim.lsp.buf.rename()<CR>")
     map("n", "<leader>ca", "<CMD>lua vim.lsp.buf.code_action()<CR>")
     map("n", "E", "<CMD>lua vim.diagnostic.open_float()<CR>")
-    map("n", "[d", "<CMD>lua vim.diagnostic.goto_prev()<CR>")
-    map("n", "]d", "<CMD>lua vim.diagnostic.goto_next()<CR>")
+    map("n", "[d", "<CMD>lua vim.diagnostic.jump({ count = -1, float = true })<CR>")
+    map("n", "]d", "<CMD>lua vim.diagnostic.jump({ count = 1, float = true })<CR>")
 
     map("n", "<leader>cc", "<CMD>ClangdSwitchSourceHeader<CR>", { noremap = true, silent = true })
     local py_formating_group = vim.api.nvim_create_augroup("PyFormatingGroup", { clear = true })
@@ -195,63 +195,53 @@ local swap_next, swap_prev = (function()
     return n, p
 end)()
 M.treesitter = {
+    -- maps in normal mode to init the node/scope selection, then in visual
+    -- mode to grow/shrink it (see plugins/configs/treesitter.lua)
     incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = "<M-w>", -- maps in normal mode to init the node/scope selection
-            node_incremental = "<M-w>", -- increment to the upper named parent
-            node_decremental = "<M-S-w>", -- decrement to the previous node
-            scope_incremental = "<M-e>", -- increment to the upper scope (as defined in locals.scm)
+        init_selection = "<M-w>",
+        node_incremental = "<M-w>", -- increment to the upper named parent
+        node_decremental = "<M-S-w>", -- decrement to the previous node
+        scope_incremental = "<M-e>", -- increment to the upper scope
+    },
+
+    move = {
+        goto_next_start = {
+            ["]p"] = "@parameter.inner",
+            ["]m"] = "@function.outer",
+            ["]]"] = "@class.outer",
+        },
+        goto_next_end = {
+            ["]M"] = "@function.outer",
+            ["]["] = "@class.outer",
+        },
+        goto_previous_start = {
+            ["[p"] = "@parameter.inner",
+            ["[m"] = "@function.outer",
+            ["[["] = "@class.outer",
+        },
+        goto_previous_end = {
+            ["[M"] = "@function.outer",
+            ["[]"] = "@class.outer",
         },
     },
-    textobjects = {
-        enable = true,
-        move = {
-            enable = true,
-            set_jumps = true,
 
-            goto_next_start = {
-                ["]p"] = "@parameter.inner",
-                ["]m"] = "@function.outer",
-                ["]]"] = "@class.outer",
-            },
-            goto_next_end = {
-                ["]M"] = "@function.outer",
-                ["]["] = "@class.outer",
-            },
-            goto_previous_start = {
-                ["[p"] = "@parameter.inner",
-                ["[m"] = "@function.outer",
-                ["[["] = "@class.outer",
-            },
-            goto_previous_end = {
-                ["[M"] = "@function.outer",
-                ["[]"] = "@class.outer",
-            },
-        },
+    select = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
 
-        select = {
-            enable = true,
-            keymaps = {
-                ["af"] = "@function.outer",
-                ["if"] = "@function.inner",
+        ["ac"] = "@conditional.outer",
+        ["ic"] = "@conditional.inner",
 
-                ["ac"] = "@conditional.outer",
-                ["ic"] = "@conditional.inner",
+        ["aa"] = "@parameter.outer",
+        ["ia"] = "@parameter.inner",
 
-                ["aa"] = "@parameter.outer",
-                ["ia"] = "@parameter.inner",
+        ["av"] = "@variable.outer",
+        ["iv"] = "@variable.inner",
+    },
 
-                ["av"] = "@variable.outer",
-                ["iv"] = "@variable.inner",
-            },
-        },
-
-        swap = {
-            enable = true,
-            swap_next = swap_next,
-            swap_previous = swap_prev,
-        },
+    swap = {
+        swap_next = swap_next,
+        swap_previous = swap_prev,
     },
 }
 

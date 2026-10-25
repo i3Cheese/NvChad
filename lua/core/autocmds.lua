@@ -49,7 +49,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 local function enable_cpp_autoformat()
-    vim.loop.fs_access("./.clang-format", "R", function(err, permission)
+    vim.uv.fs_access("./.clang-format", "R", function(err, permission)
         _ = err
         do_cpp_formating = permission
     end)
@@ -68,6 +68,6 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = { "typescriptreact", "typescript", "javascript", "javascriptreact" },
     group = filetypes_group,
     callback = function ()
-        vim.api.nvim_buf_set_option(0, 'shiftwidth', 2)
+        vim.bo.shiftwidth = 2
     end
 })

@@ -39,11 +39,11 @@ local plugins = {
     },
 
     {
-        "feline-nvim/feline.nvim",
+        "nvim-lualine/lualine.nvim",
         after = "nvim-web-devicons",
         cond = no_vscode,
         config = function()
-            require("plugins.configs.feline").setup()
+            require("plugins.configs.lualine").setup()
         end,
     },
     {
@@ -85,11 +85,19 @@ local plugins = {
         end,
         run = ":TSUpdate",
     },
-    -- {
-    --     "nvim-treesitter/nvim-treesitter-textobjects",
-    --     cond = no_vscode,
-    --     after = "nvim-treesitter",
-    -- },
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        cond = no_vscode,
+        branch = 'main',
+        after = "nvim-treesitter",
+        setup = function()
+            -- disable the built-in ftplugin ]m/[m/... maps so ours take over
+            vim.g.no_plugin_maps = true
+        end,
+        config = function()
+            require("plugins.configs.treesitter").setup_textobjects()
+        end,
+    },
     -- {
     --     "nvim-treesitter/nvim-treesitter-refactor",
     --     cond = no_vscode,
@@ -149,7 +157,7 @@ local plugins = {
     -- },
 
     {
-        "jose-elias-alvarez/null-ls.nvim",
+        "nvimtools/none-ls.nvim",
          -- cond = no_vscode,
         config = function()
             require("plugins.configs.lspconfig").setup_null_ls()

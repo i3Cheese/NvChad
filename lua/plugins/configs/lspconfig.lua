@@ -1,14 +1,14 @@
 local M = {}
 
 local function on_attach(client, bufnr)
-    local function buf_set_option(...)
-        vim.api.nvim_buf_set_option(bufnr, ...)
+    -- formatting is delegated to null-ls/none-ls, except for rust_analyzer:
+    -- none-ls dropped its rustfmt builtin, so let the LSP format Rust itself
+    if client.name ~= "rust_analyzer" then
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
     end
-
-    client.server_capabilities.document_formatting = false
-    client.server_capabilities.document_range_formatting = false
     -- Enable completion triggered by <c-x><c-o>
-    buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+    vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 end
 
 local function setup_pyright(opts)
@@ -17,24 +17,28 @@ local function setup_pyright(opts)
         client.config.settings.python.pythonPath =
             require("core.utils").locate_python_executable(client.config.root_dir)
     end
-    require("lspconfig").pyright.setup(opts)
+    vim.lsp.config("pyright", opts)
+    vim.lsp.enable("pyright")
 end
 
 local function setup_html(opts)
     opts = vim.deepcopy(opts)
     opts.filetypes = { "html", "htmldjango" }
     -- bun add -g vscode-langservers-extracted
-    require("lspconfig").html.setup(opts)
+    vim.lsp.config("html", opts)
+    vim.lsp.enable("html")
 end
 
 local function setup_js(opts)
     opts = vim.deepcopy(opts)
-    require("lspconfig").ts_ls.setup(opts)
+    vim.lsp.config("ts_ls", opts)
+    vim.lsp.enable("ts_ls")
 end
 
 local function setup_rust_analyser(opts)
     opts = vim.deepcopy(opts)
-    require("lspconfig").rust_analyzer.setup(opts)
+    vim.lsp.config("rust_analyzer", opts)
+    vim.lsp.enable("rust_analyzer")
 end
 
 local function setup_latex(opts)
@@ -50,19 +54,21 @@ local function setup_latex(opts)
             },
         }
     }
-    require("lspconfig").texlab.setup(opts)
+    vim.lsp.config("texlab", opts)
+    vim.lsp.enable("texlab")
 end
 
 local function setup_go(opts)
     opts = vim.deepcopy(opts)
-    require("lspconfig").gopls.setup(opts)
+    vim.lsp.config("gopls", opts)
+    vim.lsp.enable("gopls")
 end
 
 local function setup_lua(opts)
     opts = vim.deepcopy(opts)
     opts.on_init = function(client)
         local path = client.workspace_folders[1].name
-        if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+        if not vim.uv.fs_stat(path .. '/.luarc.json') and not vim.uv.fs_stat(path .. '/.luarc.jsonc') then
             client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
                 Lua = {
                     runtime = {
@@ -88,14 +94,16 @@ local function setup_lua(opts)
         end
         return true
     end
-    require("lspconfig").lua_ls.setup(opts)
+    vim.lsp.config("lua_ls", opts)
+    vim.lsp.enable("lua_ls")
 end
 
 local function setup_cpp(opts)
     opts = vim.deepcopy(opts)
     opts.cmd = { "clangd" }
     opts.capabilities.offsetEncoding = { "utf-16" }
-    require("lspconfig").clangd.setup(opts)
+    vim.lsp.config("clangd", opts)
+    vim.lsp.enable("clangd")
 end
 
 local function setup_servers()
@@ -149,12 +157,10 @@ M.setup_null_ls = function()
             --     extra_args = { "--ignore=E402" },
             -- }),
             null_ls.builtins.formatting.black,
-            null_ls.builtins.formatting.brittany,
             -- null_ls.builtins.code_actions.gitsigns,
             null_ls.builtins.formatting.prettier,
             null_ls.builtins.formatting.djhtml,
             null_ls.builtins.formatting.gofmt,
-            null_ls.builtins.formatting.rustfmt,
             null_ls.builtins.hover.dictionary,
         },
     })
